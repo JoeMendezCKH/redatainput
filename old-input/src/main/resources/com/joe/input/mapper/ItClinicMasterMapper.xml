@@ -1,0 +1,779 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joe.input.mapper.ItClinicMasterMapper">
+  <resultMap id="BaseResultMap" type="com.joe.input.model.ItClinicMaster">
+    <id column="VISIT_NO" jdbcType="INTEGER" property="visitNo" />
+    <id column="VISIT_DATE" jdbcType="TIMESTAMP" property="visitDate" />
+    <result column="CLINIC_LABEL" jdbcType="VARCHAR" property="clinicLabel" />
+    <result column="VISIT_TIME_DESC" jdbcType="VARCHAR" property="visitTimeDesc" />
+    <result column="SERIAL_NO" jdbcType="INTEGER" property="serialNo" />
+    <result column="PATIENT_ID" jdbcType="VARCHAR" property="patientId" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="NAME_PHONETIC" jdbcType="VARCHAR" property="namePhonetic" />
+    <result column="SEX" jdbcType="VARCHAR" property="sex" />
+    <result column="AGE" jdbcType="INTEGER" property="age" />
+    <result column="IDENTITY" jdbcType="VARCHAR" property="identity" />
+    <result column="CHARGE_TYPE" jdbcType="VARCHAR" property="chargeType" />
+    <result column="INSURANCE_TYPE" jdbcType="VARCHAR" property="insuranceType" />
+    <result column="INSURANCE_NO" jdbcType="VARCHAR" property="insuranceNo" />
+    <result column="UNIT_IN_CONTRACT" jdbcType="VARCHAR" property="unitInContract" />
+    <result column="CLINIC_TYPE" jdbcType="VARCHAR" property="clinicType" />
+    <result column="FIRST_VISIT_INDICATOR" jdbcType="INTEGER" property="firstVisitIndicator" />
+    <result column="VISIT_DEPT" jdbcType="VARCHAR" property="visitDept" />
+    <result column="VISIT_SPECIAL_CLINIC" jdbcType="VARCHAR" property="visitSpecialClinic" />
+    <result column="DOCTOR" jdbcType="VARCHAR" property="doctor" />
+    <result column="MR_PROVIDE_INDICATOR" jdbcType="INTEGER" property="mrProvideIndicator" />
+    <result column="REGISTRATION_STATUS" jdbcType="INTEGER" property="registrationStatus" />
+    <result column="REGISTERING_DATE" jdbcType="DATE" property="registeringDate" />
+    <result column="SYMPTOM" jdbcType="VARCHAR" property="symptom" />
+    <result column="REGIST_FEE" jdbcType="REAL" property="registFee" />
+    <result column="CLINIC_FEE" jdbcType="REAL" property="clinicFee" />
+    <result column="OTHER_FEE" jdbcType="REAL" property="otherFee" />
+    <result column="CLINIC_CHARGE" jdbcType="REAL" property="clinicCharge" />
+    <result column="OPERATOR" jdbcType="VARCHAR" property="operator" />
+    <result column="RETURNED_DATE" jdbcType="DATE" property="returnedDate" />
+    <result column="RETURNED_OPERATOR" jdbcType="VARCHAR" property="returnedOperator" />
+    <result column="MODE_CODE" jdbcType="CHAR" property="modeCode" />
+    <result column="CARD_NAME" jdbcType="VARCHAR" property="cardName" />
+    <result column="CARD_NO" jdbcType="VARCHAR" property="cardNo" />
+    <result column="ACCT_DATE_TIME" jdbcType="DATE" property="acctDateTime" />
+    <result column="ACCT_NO" jdbcType="VARCHAR" property="acctNo" />
+    <result column="PAY_WAY" jdbcType="VARCHAR" property="payWay" />
+    <result column="MR_PROVIDED_INDICATOR" jdbcType="INTEGER" property="mrProvidedIndicator" />
+    <result column="INVOICE_NO" jdbcType="VARCHAR" property="invoiceNo" />
+    <result column="CLINIC_NO" jdbcType="VARCHAR" property="clinicNo" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    VISIT_NO, VISIT_DATE, CLINIC_LABEL, VISIT_TIME_DESC, SERIAL_NO, PATIENT_ID, NAME, 
+    NAME_PHONETIC, SEX, AGE, IDENTITY, CHARGE_TYPE, INSURANCE_TYPE, INSURANCE_NO, UNIT_IN_CONTRACT, 
+    CLINIC_TYPE, FIRST_VISIT_INDICATOR, VISIT_DEPT, VISIT_SPECIAL_CLINIC, DOCTOR, MR_PROVIDE_INDICATOR, 
+    REGISTRATION_STATUS, REGISTERING_DATE, SYMPTOM, REGIST_FEE, CLINIC_FEE, OTHER_FEE, 
+    CLINIC_CHARGE, OPERATOR, RETURNED_DATE, RETURNED_OPERATOR, MODE_CODE, CARD_NAME, 
+    CARD_NO, ACCT_DATE_TIME, ACCT_NO, PAY_WAY, MR_PROVIDED_INDICATOR, INVOICE_NO, CLINIC_NO
+  </sql>
+  <select id="selectByExample" parameterType="com.joe.input.model.ItClinicMasterExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from it_clinic_master
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from it_clinic_master
+    where VISIT_NO = #{visitNo,jdbcType=INTEGER}
+      and VISIT_DATE = #{visitDate,jdbcType=TIMESTAMP}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from it_clinic_master
+    where VISIT_NO = #{visitNo,jdbcType=INTEGER}
+      and VISIT_DATE = #{visitDate,jdbcType=TIMESTAMP}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.joe.input.model.ItClinicMasterExample">
+    delete from it_clinic_master
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.joe.input.model.ItClinicMaster">
+    insert into it_clinic_master (VISIT_NO, VISIT_DATE, CLINIC_LABEL, 
+      VISIT_TIME_DESC, SERIAL_NO, PATIENT_ID, 
+      NAME, NAME_PHONETIC, SEX, 
+      AGE, IDENTITY, CHARGE_TYPE, 
+      INSURANCE_TYPE, INSURANCE_NO, UNIT_IN_CONTRACT, 
+      CLINIC_TYPE, FIRST_VISIT_INDICATOR, VISIT_DEPT, 
+      VISIT_SPECIAL_CLINIC, DOCTOR, MR_PROVIDE_INDICATOR, 
+      REGISTRATION_STATUS, REGISTERING_DATE, SYMPTOM, 
+      REGIST_FEE, CLINIC_FEE, OTHER_FEE, 
+      CLINIC_CHARGE, OPERATOR, RETURNED_DATE, 
+      RETURNED_OPERATOR, MODE_CODE, CARD_NAME, 
+      CARD_NO, ACCT_DATE_TIME, ACCT_NO, 
+      PAY_WAY, MR_PROVIDED_INDICATOR, INVOICE_NO, 
+      CLINIC_NO)
+    values (#{visitNo,jdbcType=INTEGER}, #{visitDate,jdbcType=TIMESTAMP}, #{clinicLabel,jdbcType=VARCHAR}, 
+      #{visitTimeDesc,jdbcType=VARCHAR}, #{serialNo,jdbcType=INTEGER}, #{patientId,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{namePhonetic,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
+      #{age,jdbcType=INTEGER}, #{identity,jdbcType=VARCHAR}, #{chargeType,jdbcType=VARCHAR}, 
+      #{insuranceType,jdbcType=VARCHAR}, #{insuranceNo,jdbcType=VARCHAR}, #{unitInContract,jdbcType=VARCHAR}, 
+      #{clinicType,jdbcType=VARCHAR}, #{firstVisitIndicator,jdbcType=INTEGER}, #{visitDept,jdbcType=VARCHAR}, 
+      #{visitSpecialClinic,jdbcType=VARCHAR}, #{doctor,jdbcType=VARCHAR}, #{mrProvideIndicator,jdbcType=INTEGER}, 
+      #{registrationStatus,jdbcType=INTEGER}, #{registeringDate,jdbcType=DATE}, #{symptom,jdbcType=VARCHAR}, 
+      #{registFee,jdbcType=REAL}, #{clinicFee,jdbcType=REAL}, #{otherFee,jdbcType=REAL}, 
+      #{clinicCharge,jdbcType=REAL}, #{operator,jdbcType=VARCHAR}, #{returnedDate,jdbcType=DATE}, 
+      #{returnedOperator,jdbcType=VARCHAR}, #{modeCode,jdbcType=CHAR}, #{cardName,jdbcType=VARCHAR}, 
+      #{cardNo,jdbcType=VARCHAR}, #{acctDateTime,jdbcType=DATE}, #{acctNo,jdbcType=VARCHAR}, 
+      #{payWay,jdbcType=VARCHAR}, #{mrProvidedIndicator,jdbcType=INTEGER}, #{invoiceNo,jdbcType=VARCHAR}, 
+      #{clinicNo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.joe.input.model.ItClinicMaster">
+    insert into it_clinic_master
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="visitNo != null">
+        VISIT_NO,
+      </if>
+      <if test="visitDate != null">
+        VISIT_DATE,
+      </if>
+      <if test="clinicLabel != null">
+        CLINIC_LABEL,
+      </if>
+      <if test="visitTimeDesc != null">
+        VISIT_TIME_DESC,
+      </if>
+      <if test="serialNo != null">
+        SERIAL_NO,
+      </if>
+      <if test="patientId != null">
+        PATIENT_ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="namePhonetic != null">
+        NAME_PHONETIC,
+      </if>
+      <if test="sex != null">
+        SEX,
+      </if>
+      <if test="age != null">
+        AGE,
+      </if>
+      <if test="identity != null">
+        IDENTITY,
+      </if>
+      <if test="chargeType != null">
+        CHARGE_TYPE,
+      </if>
+      <if test="insuranceType != null">
+        INSURANCE_TYPE,
+      </if>
+      <if test="insuranceNo != null">
+        INSURANCE_NO,
+      </if>
+      <if test="unitInContract != null">
+        UNIT_IN_CONTRACT,
+      </if>
+      <if test="clinicType != null">
+        CLINIC_TYPE,
+      </if>
+      <if test="firstVisitIndicator != null">
+        FIRST_VISIT_INDICATOR,
+      </if>
+      <if test="visitDept != null">
+        VISIT_DEPT,
+      </if>
+      <if test="visitSpecialClinic != null">
+        VISIT_SPECIAL_CLINIC,
+      </if>
+      <if test="doctor != null">
+        DOCTOR,
+      </if>
+      <if test="mrProvideIndicator != null">
+        MR_PROVIDE_INDICATOR,
+      </if>
+      <if test="registrationStatus != null">
+        REGISTRATION_STATUS,
+      </if>
+      <if test="registeringDate != null">
+        REGISTERING_DATE,
+      </if>
+      <if test="symptom != null">
+        SYMPTOM,
+      </if>
+      <if test="registFee != null">
+        REGIST_FEE,
+      </if>
+      <if test="clinicFee != null">
+        CLINIC_FEE,
+      </if>
+      <if test="otherFee != null">
+        OTHER_FEE,
+      </if>
+      <if test="clinicCharge != null">
+        CLINIC_CHARGE,
+      </if>
+      <if test="operator != null">
+        OPERATOR,
+      </if>
+      <if test="returnedDate != null">
+        RETURNED_DATE,
+      </if>
+      <if test="returnedOperator != null">
+        RETURNED_OPERATOR,
+      </if>
+      <if test="modeCode != null">
+        MODE_CODE,
+      </if>
+      <if test="cardName != null">
+        CARD_NAME,
+      </if>
+      <if test="cardNo != null">
+        CARD_NO,
+      </if>
+      <if test="acctDateTime != null">
+        ACCT_DATE_TIME,
+      </if>
+      <if test="acctNo != null">
+        ACCT_NO,
+      </if>
+      <if test="payWay != null">
+        PAY_WAY,
+      </if>
+      <if test="mrProvidedIndicator != null">
+        MR_PROVIDED_INDICATOR,
+      </if>
+      <if test="invoiceNo != null">
+        INVOICE_NO,
+      </if>
+      <if test="clinicNo != null">
+        CLINIC_NO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="visitNo != null">
+        #{visitNo,jdbcType=INTEGER},
+      </if>
+      <if test="visitDate != null">
+        #{visitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clinicLabel != null">
+        #{clinicLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="visitTimeDesc != null">
+        #{visitTimeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNo != null">
+        #{serialNo,jdbcType=INTEGER},
+      </if>
+      <if test="patientId != null">
+        #{patientId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="namePhonetic != null">
+        #{namePhonetic,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="identity != null">
+        #{identity,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeType != null">
+        #{chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceType != null">
+        #{insuranceType,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceNo != null">
+        #{insuranceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="unitInContract != null">
+        #{unitInContract,jdbcType=VARCHAR},
+      </if>
+      <if test="clinicType != null">
+        #{clinicType,jdbcType=VARCHAR},
+      </if>
+      <if test="firstVisitIndicator != null">
+        #{firstVisitIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="visitDept != null">
+        #{visitDept,jdbcType=VARCHAR},
+      </if>
+      <if test="visitSpecialClinic != null">
+        #{visitSpecialClinic,jdbcType=VARCHAR},
+      </if>
+      <if test="doctor != null">
+        #{doctor,jdbcType=VARCHAR},
+      </if>
+      <if test="mrProvideIndicator != null">
+        #{mrProvideIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="registrationStatus != null">
+        #{registrationStatus,jdbcType=INTEGER},
+      </if>
+      <if test="registeringDate != null">
+        #{registeringDate,jdbcType=DATE},
+      </if>
+      <if test="symptom != null">
+        #{symptom,jdbcType=VARCHAR},
+      </if>
+      <if test="registFee != null">
+        #{registFee,jdbcType=REAL},
+      </if>
+      <if test="clinicFee != null">
+        #{clinicFee,jdbcType=REAL},
+      </if>
+      <if test="otherFee != null">
+        #{otherFee,jdbcType=REAL},
+      </if>
+      <if test="clinicCharge != null">
+        #{clinicCharge,jdbcType=REAL},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="returnedDate != null">
+        #{returnedDate,jdbcType=DATE},
+      </if>
+      <if test="returnedOperator != null">
+        #{returnedOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="modeCode != null">
+        #{modeCode,jdbcType=CHAR},
+      </if>
+      <if test="cardName != null">
+        #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null">
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="acctDateTime != null">
+        #{acctDateTime,jdbcType=DATE},
+      </if>
+      <if test="acctNo != null">
+        #{acctNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payWay != null">
+        #{payWay,jdbcType=VARCHAR},
+      </if>
+      <if test="mrProvidedIndicator != null">
+        #{mrProvidedIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="invoiceNo != null">
+        #{invoiceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="clinicNo != null">
+        #{clinicNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.joe.input.model.ItClinicMasterExample" resultType="java.lang.Long">
+    select count(*) from it_clinic_master
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update it_clinic_master
+    <set>
+      <if test="record.visitNo != null">
+        VISIT_NO = #{record.visitNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.visitDate != null">
+        VISIT_DATE = #{record.visitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.clinicLabel != null">
+        CLINIC_LABEL = #{record.clinicLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.visitTimeDesc != null">
+        VISIT_TIME_DESC = #{record.visitTimeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serialNo != null">
+        SERIAL_NO = #{record.serialNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.patientId != null">
+        PATIENT_ID = #{record.patientId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.namePhonetic != null">
+        NAME_PHONETIC = #{record.namePhonetic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null">
+        SEX = #{record.sex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.age != null">
+        AGE = #{record.age,jdbcType=INTEGER},
+      </if>
+      <if test="record.identity != null">
+        IDENTITY = #{record.identity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chargeType != null">
+        CHARGE_TYPE = #{record.chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuranceType != null">
+        INSURANCE_TYPE = #{record.insuranceType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.insuranceNo != null">
+        INSURANCE_NO = #{record.insuranceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unitInContract != null">
+        UNIT_IN_CONTRACT = #{record.unitInContract,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clinicType != null">
+        CLINIC_TYPE = #{record.clinicType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.firstVisitIndicator != null">
+        FIRST_VISIT_INDICATOR = #{record.firstVisitIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="record.visitDept != null">
+        VISIT_DEPT = #{record.visitDept,jdbcType=VARCHAR},
+      </if>
+      <if test="record.visitSpecialClinic != null">
+        VISIT_SPECIAL_CLINIC = #{record.visitSpecialClinic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.doctor != null">
+        DOCTOR = #{record.doctor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mrProvideIndicator != null">
+        MR_PROVIDE_INDICATOR = #{record.mrProvideIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="record.registrationStatus != null">
+        REGISTRATION_STATUS = #{record.registrationStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.registeringDate != null">
+        REGISTERING_DATE = #{record.registeringDate,jdbcType=DATE},
+      </if>
+      <if test="record.symptom != null">
+        SYMPTOM = #{record.symptom,jdbcType=VARCHAR},
+      </if>
+      <if test="record.registFee != null">
+        REGIST_FEE = #{record.registFee,jdbcType=REAL},
+      </if>
+      <if test="record.clinicFee != null">
+        CLINIC_FEE = #{record.clinicFee,jdbcType=REAL},
+      </if>
+      <if test="record.otherFee != null">
+        OTHER_FEE = #{record.otherFee,jdbcType=REAL},
+      </if>
+      <if test="record.clinicCharge != null">
+        CLINIC_CHARGE = #{record.clinicCharge,jdbcType=REAL},
+      </if>
+      <if test="record.operator != null">
+        OPERATOR = #{record.operator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.returnedDate != null">
+        RETURNED_DATE = #{record.returnedDate,jdbcType=DATE},
+      </if>
+      <if test="record.returnedOperator != null">
+        RETURNED_OPERATOR = #{record.returnedOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modeCode != null">
+        MODE_CODE = #{record.modeCode,jdbcType=CHAR},
+      </if>
+      <if test="record.cardName != null">
+        CARD_NAME = #{record.cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardNo != null">
+        CARD_NO = #{record.cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acctDateTime != null">
+        ACCT_DATE_TIME = #{record.acctDateTime,jdbcType=DATE},
+      </if>
+      <if test="record.acctNo != null">
+        ACCT_NO = #{record.acctNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payWay != null">
+        PAY_WAY = #{record.payWay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mrProvidedIndicator != null">
+        MR_PROVIDED_INDICATOR = #{record.mrProvidedIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="record.invoiceNo != null">
+        INVOICE_NO = #{record.invoiceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clinicNo != null">
+        CLINIC_NO = #{record.clinicNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update it_clinic_master
+    set VISIT_NO = #{record.visitNo,jdbcType=INTEGER},
+      VISIT_DATE = #{record.visitDate,jdbcType=TIMESTAMP},
+      CLINIC_LABEL = #{record.clinicLabel,jdbcType=VARCHAR},
+      VISIT_TIME_DESC = #{record.visitTimeDesc,jdbcType=VARCHAR},
+      SERIAL_NO = #{record.serialNo,jdbcType=INTEGER},
+      PATIENT_ID = #{record.patientId,jdbcType=VARCHAR},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      NAME_PHONETIC = #{record.namePhonetic,jdbcType=VARCHAR},
+      SEX = #{record.sex,jdbcType=VARCHAR},
+      AGE = #{record.age,jdbcType=INTEGER},
+      IDENTITY = #{record.identity,jdbcType=VARCHAR},
+      CHARGE_TYPE = #{record.chargeType,jdbcType=VARCHAR},
+      INSURANCE_TYPE = #{record.insuranceType,jdbcType=VARCHAR},
+      INSURANCE_NO = #{record.insuranceNo,jdbcType=VARCHAR},
+      UNIT_IN_CONTRACT = #{record.unitInContract,jdbcType=VARCHAR},
+      CLINIC_TYPE = #{record.clinicType,jdbcType=VARCHAR},
+      FIRST_VISIT_INDICATOR = #{record.firstVisitIndicator,jdbcType=INTEGER},
+      VISIT_DEPT = #{record.visitDept,jdbcType=VARCHAR},
+      VISIT_SPECIAL_CLINIC = #{record.visitSpecialClinic,jdbcType=VARCHAR},
+      DOCTOR = #{record.doctor,jdbcType=VARCHAR},
+      MR_PROVIDE_INDICATOR = #{record.mrProvideIndicator,jdbcType=INTEGER},
+      REGISTRATION_STATUS = #{record.registrationStatus,jdbcType=INTEGER},
+      REGISTERING_DATE = #{record.registeringDate,jdbcType=DATE},
+      SYMPTOM = #{record.symptom,jdbcType=VARCHAR},
+      REGIST_FEE = #{record.registFee,jdbcType=REAL},
+      CLINIC_FEE = #{record.clinicFee,jdbcType=REAL},
+      OTHER_FEE = #{record.otherFee,jdbcType=REAL},
+      CLINIC_CHARGE = #{record.clinicCharge,jdbcType=REAL},
+      OPERATOR = #{record.operator,jdbcType=VARCHAR},
+      RETURNED_DATE = #{record.returnedDate,jdbcType=DATE},
+      RETURNED_OPERATOR = #{record.returnedOperator,jdbcType=VARCHAR},
+      MODE_CODE = #{record.modeCode,jdbcType=CHAR},
+      CARD_NAME = #{record.cardName,jdbcType=VARCHAR},
+      CARD_NO = #{record.cardNo,jdbcType=VARCHAR},
+      ACCT_DATE_TIME = #{record.acctDateTime,jdbcType=DATE},
+      ACCT_NO = #{record.acctNo,jdbcType=VARCHAR},
+      PAY_WAY = #{record.payWay,jdbcType=VARCHAR},
+      MR_PROVIDED_INDICATOR = #{record.mrProvidedIndicator,jdbcType=INTEGER},
+      INVOICE_NO = #{record.invoiceNo,jdbcType=VARCHAR},
+      CLINIC_NO = #{record.clinicNo,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.joe.input.model.ItClinicMaster">
+    update it_clinic_master
+    <set>
+      <if test="clinicLabel != null">
+        CLINIC_LABEL = #{clinicLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="visitTimeDesc != null">
+        VISIT_TIME_DESC = #{visitTimeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNo != null">
+        SERIAL_NO = #{serialNo,jdbcType=INTEGER},
+      </if>
+      <if test="patientId != null">
+        PATIENT_ID = #{patientId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="namePhonetic != null">
+        NAME_PHONETIC = #{namePhonetic,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        SEX = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        AGE = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="identity != null">
+        IDENTITY = #{identity,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeType != null">
+        CHARGE_TYPE = #{chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceType != null">
+        INSURANCE_TYPE = #{insuranceType,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceNo != null">
+        INSURANCE_NO = #{insuranceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="unitInContract != null">
+        UNIT_IN_CONTRACT = #{unitInContract,jdbcType=VARCHAR},
+      </if>
+      <if test="clinicType != null">
+        CLINIC_TYPE = #{clinicType,jdbcType=VARCHAR},
+      </if>
+      <if test="firstVisitIndicator != null">
+        FIRST_VISIT_INDICATOR = #{firstVisitIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="visitDept != null">
+        VISIT_DEPT = #{visitDept,jdbcType=VARCHAR},
+      </if>
+      <if test="visitSpecialClinic != null">
+        VISIT_SPECIAL_CLINIC = #{visitSpecialClinic,jdbcType=VARCHAR},
+      </if>
+      <if test="doctor != null">
+        DOCTOR = #{doctor,jdbcType=VARCHAR},
+      </if>
+      <if test="mrProvideIndicator != null">
+        MR_PROVIDE_INDICATOR = #{mrProvideIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="registrationStatus != null">
+        REGISTRATION_STATUS = #{registrationStatus,jdbcType=INTEGER},
+      </if>
+      <if test="registeringDate != null">
+        REGISTERING_DATE = #{registeringDate,jdbcType=DATE},
+      </if>
+      <if test="symptom != null">
+        SYMPTOM = #{symptom,jdbcType=VARCHAR},
+      </if>
+      <if test="registFee != null">
+        REGIST_FEE = #{registFee,jdbcType=REAL},
+      </if>
+      <if test="clinicFee != null">
+        CLINIC_FEE = #{clinicFee,jdbcType=REAL},
+      </if>
+      <if test="otherFee != null">
+        OTHER_FEE = #{otherFee,jdbcType=REAL},
+      </if>
+      <if test="clinicCharge != null">
+        CLINIC_CHARGE = #{clinicCharge,jdbcType=REAL},
+      </if>
+      <if test="operator != null">
+        OPERATOR = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="returnedDate != null">
+        RETURNED_DATE = #{returnedDate,jdbcType=DATE},
+      </if>
+      <if test="returnedOperator != null">
+        RETURNED_OPERATOR = #{returnedOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="modeCode != null">
+        MODE_CODE = #{modeCode,jdbcType=CHAR},
+      </if>
+      <if test="cardName != null">
+        CARD_NAME = #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null">
+        CARD_NO = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="acctDateTime != null">
+        ACCT_DATE_TIME = #{acctDateTime,jdbcType=DATE},
+      </if>
+      <if test="acctNo != null">
+        ACCT_NO = #{acctNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payWay != null">
+        PAY_WAY = #{payWay,jdbcType=VARCHAR},
+      </if>
+      <if test="mrProvidedIndicator != null">
+        MR_PROVIDED_INDICATOR = #{mrProvidedIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="invoiceNo != null">
+        INVOICE_NO = #{invoiceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="clinicNo != null">
+        CLINIC_NO = #{clinicNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where VISIT_NO = #{visitNo,jdbcType=INTEGER}
+      and VISIT_DATE = #{visitDate,jdbcType=TIMESTAMP}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.joe.input.model.ItClinicMaster">
+    update it_clinic_master
+    set CLINIC_LABEL = #{clinicLabel,jdbcType=VARCHAR},
+      VISIT_TIME_DESC = #{visitTimeDesc,jdbcType=VARCHAR},
+      SERIAL_NO = #{serialNo,jdbcType=INTEGER},
+      PATIENT_ID = #{patientId,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      NAME_PHONETIC = #{namePhonetic,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=VARCHAR},
+      AGE = #{age,jdbcType=INTEGER},
+      IDENTITY = #{identity,jdbcType=VARCHAR},
+      CHARGE_TYPE = #{chargeType,jdbcType=VARCHAR},
+      INSURANCE_TYPE = #{insuranceType,jdbcType=VARCHAR},
+      INSURANCE_NO = #{insuranceNo,jdbcType=VARCHAR},
+      UNIT_IN_CONTRACT = #{unitInContract,jdbcType=VARCHAR},
+      CLINIC_TYPE = #{clinicType,jdbcType=VARCHAR},
+      FIRST_VISIT_INDICATOR = #{firstVisitIndicator,jdbcType=INTEGER},
+      VISIT_DEPT = #{visitDept,jdbcType=VARCHAR},
+      VISIT_SPECIAL_CLINIC = #{visitSpecialClinic,jdbcType=VARCHAR},
+      DOCTOR = #{doctor,jdbcType=VARCHAR},
+      MR_PROVIDE_INDICATOR = #{mrProvideIndicator,jdbcType=INTEGER},
+      REGISTRATION_STATUS = #{registrationStatus,jdbcType=INTEGER},
+      REGISTERING_DATE = #{registeringDate,jdbcType=DATE},
+      SYMPTOM = #{symptom,jdbcType=VARCHAR},
+      REGIST_FEE = #{registFee,jdbcType=REAL},
+      CLINIC_FEE = #{clinicFee,jdbcType=REAL},
+      OTHER_FEE = #{otherFee,jdbcType=REAL},
+      CLINIC_CHARGE = #{clinicCharge,jdbcType=REAL},
+      OPERATOR = #{operator,jdbcType=VARCHAR},
+      RETURNED_DATE = #{returnedDate,jdbcType=DATE},
+      RETURNED_OPERATOR = #{returnedOperator,jdbcType=VARCHAR},
+      MODE_CODE = #{modeCode,jdbcType=CHAR},
+      CARD_NAME = #{cardName,jdbcType=VARCHAR},
+      CARD_NO = #{cardNo,jdbcType=VARCHAR},
+      ACCT_DATE_TIME = #{acctDateTime,jdbcType=DATE},
+      ACCT_NO = #{acctNo,jdbcType=VARCHAR},
+      PAY_WAY = #{payWay,jdbcType=VARCHAR},
+      MR_PROVIDED_INDICATOR = #{mrProvidedIndicator,jdbcType=INTEGER},
+      INVOICE_NO = #{invoiceNo,jdbcType=VARCHAR},
+      CLINIC_NO = #{clinicNo,jdbcType=VARCHAR}
+    where VISIT_NO = #{visitNo,jdbcType=INTEGER}
+      and VISIT_DATE = #{visitDate,jdbcType=TIMESTAMP}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.joe.input.model.ItClinicMasterExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from it_clinic_master
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

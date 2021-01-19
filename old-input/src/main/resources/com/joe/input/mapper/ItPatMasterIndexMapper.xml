@@ -1,0 +1,869 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joe.input.mapper.ItPatMasterIndexMapper">
+  <resultMap id="BaseResultMap" type="com.joe.input.model.ItPatMasterIndex">
+    <id column="PATIENT_ID" jdbcType="VARCHAR" property="patientId" />
+    <result column="INP_NO" jdbcType="VARCHAR" property="inpNo" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="NAME_PHONETIC" jdbcType="VARCHAR" property="namePhonetic" />
+    <result column="SEX" jdbcType="VARCHAR" property="sex" />
+    <result column="DATE_OF_BIRTH" jdbcType="DATE" property="dateOfBirth" />
+    <result column="BIRTH_PLACE" jdbcType="VARCHAR" property="birthPlace" />
+    <result column="CITIZENSHIP" jdbcType="VARCHAR" property="citizenship" />
+    <result column="NATION" jdbcType="VARCHAR" property="nation" />
+    <result column="ID_NO" jdbcType="VARCHAR" property="idNo" />
+    <result column="IDENTITY" jdbcType="VARCHAR" property="identity" />
+    <result column="CHARGE_TYPE" jdbcType="VARCHAR" property="chargeType" />
+    <result column="UNIT_IN_CONTRACT" jdbcType="VARCHAR" property="unitInContract" />
+    <result column="MAILING_ADDRESS" jdbcType="VARCHAR" property="mailingAddress" />
+    <result column="ZIP_CODE" jdbcType="VARCHAR" property="zipCode" />
+    <result column="PHONE_NUMBER_HOME" jdbcType="VARCHAR" property="phoneNumberHome" />
+    <result column="PHONE_NUMBER_BUSINESS" jdbcType="VARCHAR" property="phoneNumberBusiness" />
+    <result column="NEXT_OF_KIN" jdbcType="VARCHAR" property="nextOfKin" />
+    <result column="RELATIONSHIP" jdbcType="VARCHAR" property="relationship" />
+    <result column="NEXT_OF_KIN_ADDR" jdbcType="VARCHAR" property="nextOfKinAddr" />
+    <result column="NEXT_OF_KIN_ZIP_CODE" jdbcType="VARCHAR" property="nextOfKinZipCode" />
+    <result column="NEXT_OF_KIN_PHONE" jdbcType="VARCHAR" property="nextOfKinPhone" />
+    <result column="LAST_VISIT_DATE" jdbcType="DATE" property="lastVisitDate" />
+    <result column="VIP_INDICATOR" jdbcType="INTEGER" property="vipIndicator" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="OPERATOR" jdbcType="VARCHAR" property="operator" />
+    <result column="SERVICE_AGENCY" jdbcType="VARCHAR" property="serviceAgency" />
+    <result column="BUSINESS_ZIP_CODE" jdbcType="VARCHAR" property="businessZipCode" />
+    <result column="PATIENT_CLASS" jdbcType="VARCHAR" property="patientClass" />
+    <result column="EGREE" jdbcType="VARCHAR" property="egree" />
+    <result column="RACE" jdbcType="VARCHAR" property="race" />
+    <result column="RELIGION" jdbcType="VARCHAR" property="religion" />
+    <result column="MOTHER_LANGUAGE" jdbcType="VARCHAR" property="motherLanguage" />
+    <result column="FOREIGN_LANGUAGE" jdbcType="VARCHAR" property="foreignLanguage" />
+    <result column="ID_TYPE" jdbcType="VARCHAR" property="idType" />
+    <result column="VIP_NO" jdbcType="VARCHAR" property="vipNo" />
+    <result column="E_NAME" jdbcType="VARCHAR" property="eName" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.joe.input.model.ItPatMasterIndex">
+    <result column="PHOTO" jdbcType="LONGVARBINARY" property="photo" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    PATIENT_ID, INP_NO, NAME, NAME_PHONETIC, SEX, DATE_OF_BIRTH, BIRTH_PLACE, CITIZENSHIP, 
+    NATION, ID_NO, IDENTITY, CHARGE_TYPE, UNIT_IN_CONTRACT, MAILING_ADDRESS, ZIP_CODE, 
+    PHONE_NUMBER_HOME, PHONE_NUMBER_BUSINESS, NEXT_OF_KIN, RELATIONSHIP, NEXT_OF_KIN_ADDR, 
+    NEXT_OF_KIN_ZIP_CODE, NEXT_OF_KIN_PHONE, LAST_VISIT_DATE, VIP_INDICATOR, CREATE_DATE, 
+    OPERATOR, SERVICE_AGENCY, BUSINESS_ZIP_CODE, PATIENT_CLASS, EGREE, RACE, RELIGION, 
+    MOTHER_LANGUAGE, FOREIGN_LANGUAGE, ID_TYPE, VIP_NO, E_NAME
+  </sql>
+  <sql id="Blob_Column_List">
+    PHOTO
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.joe.input.model.ItPatMasterIndexExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from it_pat_master_index
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.joe.input.model.ItPatMasterIndexExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from it_pat_master_index
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from it_pat_master_index
+    where PATIENT_ID = #{patientId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from it_pat_master_index
+    where PATIENT_ID = #{patientId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.joe.input.model.ItPatMasterIndexExample">
+    delete from it_pat_master_index
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.joe.input.model.ItPatMasterIndex">
+    insert into it_pat_master_index (PATIENT_ID, INP_NO, NAME, 
+      NAME_PHONETIC, SEX, DATE_OF_BIRTH, 
+      BIRTH_PLACE, CITIZENSHIP, NATION, 
+      ID_NO, IDENTITY, CHARGE_TYPE, 
+      UNIT_IN_CONTRACT, MAILING_ADDRESS, ZIP_CODE, 
+      PHONE_NUMBER_HOME, PHONE_NUMBER_BUSINESS, NEXT_OF_KIN, 
+      RELATIONSHIP, NEXT_OF_KIN_ADDR, NEXT_OF_KIN_ZIP_CODE, 
+      NEXT_OF_KIN_PHONE, LAST_VISIT_DATE, VIP_INDICATOR, 
+      CREATE_DATE, OPERATOR, SERVICE_AGENCY, 
+      BUSINESS_ZIP_CODE, PATIENT_CLASS, EGREE, 
+      RACE, RELIGION, MOTHER_LANGUAGE, 
+      FOREIGN_LANGUAGE, ID_TYPE, VIP_NO, 
+      E_NAME, PHOTO)
+    values (#{patientId,jdbcType=VARCHAR}, #{inpNo,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{namePhonetic,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{dateOfBirth,jdbcType=DATE}, 
+      #{birthPlace,jdbcType=VARCHAR}, #{citizenship,jdbcType=VARCHAR}, #{nation,jdbcType=VARCHAR}, 
+      #{idNo,jdbcType=VARCHAR}, #{identity,jdbcType=VARCHAR}, #{chargeType,jdbcType=VARCHAR}, 
+      #{unitInContract,jdbcType=VARCHAR}, #{mailingAddress,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR}, 
+      #{phoneNumberHome,jdbcType=VARCHAR}, #{phoneNumberBusiness,jdbcType=VARCHAR}, #{nextOfKin,jdbcType=VARCHAR}, 
+      #{relationship,jdbcType=VARCHAR}, #{nextOfKinAddr,jdbcType=VARCHAR}, #{nextOfKinZipCode,jdbcType=VARCHAR}, 
+      #{nextOfKinPhone,jdbcType=VARCHAR}, #{lastVisitDate,jdbcType=DATE}, #{vipIndicator,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR}, #{serviceAgency,jdbcType=VARCHAR}, 
+      #{businessZipCode,jdbcType=VARCHAR}, #{patientClass,jdbcType=VARCHAR}, #{egree,jdbcType=VARCHAR}, 
+      #{race,jdbcType=VARCHAR}, #{religion,jdbcType=VARCHAR}, #{motherLanguage,jdbcType=VARCHAR}, 
+      #{foreignLanguage,jdbcType=VARCHAR}, #{idType,jdbcType=VARCHAR}, #{vipNo,jdbcType=VARCHAR}, 
+      #{eName,jdbcType=VARCHAR}, #{photo,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.joe.input.model.ItPatMasterIndex">
+    insert into it_pat_master_index
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="patientId != null">
+        PATIENT_ID,
+      </if>
+      <if test="inpNo != null">
+        INP_NO,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="namePhonetic != null">
+        NAME_PHONETIC,
+      </if>
+      <if test="sex != null">
+        SEX,
+      </if>
+      <if test="dateOfBirth != null">
+        DATE_OF_BIRTH,
+      </if>
+      <if test="birthPlace != null">
+        BIRTH_PLACE,
+      </if>
+      <if test="citizenship != null">
+        CITIZENSHIP,
+      </if>
+      <if test="nation != null">
+        NATION,
+      </if>
+      <if test="idNo != null">
+        ID_NO,
+      </if>
+      <if test="identity != null">
+        IDENTITY,
+      </if>
+      <if test="chargeType != null">
+        CHARGE_TYPE,
+      </if>
+      <if test="unitInContract != null">
+        UNIT_IN_CONTRACT,
+      </if>
+      <if test="mailingAddress != null">
+        MAILING_ADDRESS,
+      </if>
+      <if test="zipCode != null">
+        ZIP_CODE,
+      </if>
+      <if test="phoneNumberHome != null">
+        PHONE_NUMBER_HOME,
+      </if>
+      <if test="phoneNumberBusiness != null">
+        PHONE_NUMBER_BUSINESS,
+      </if>
+      <if test="nextOfKin != null">
+        NEXT_OF_KIN,
+      </if>
+      <if test="relationship != null">
+        RELATIONSHIP,
+      </if>
+      <if test="nextOfKinAddr != null">
+        NEXT_OF_KIN_ADDR,
+      </if>
+      <if test="nextOfKinZipCode != null">
+        NEXT_OF_KIN_ZIP_CODE,
+      </if>
+      <if test="nextOfKinPhone != null">
+        NEXT_OF_KIN_PHONE,
+      </if>
+      <if test="lastVisitDate != null">
+        LAST_VISIT_DATE,
+      </if>
+      <if test="vipIndicator != null">
+        VIP_INDICATOR,
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="operator != null">
+        OPERATOR,
+      </if>
+      <if test="serviceAgency != null">
+        SERVICE_AGENCY,
+      </if>
+      <if test="businessZipCode != null">
+        BUSINESS_ZIP_CODE,
+      </if>
+      <if test="patientClass != null">
+        PATIENT_CLASS,
+      </if>
+      <if test="egree != null">
+        EGREE,
+      </if>
+      <if test="race != null">
+        RACE,
+      </if>
+      <if test="religion != null">
+        RELIGION,
+      </if>
+      <if test="motherLanguage != null">
+        MOTHER_LANGUAGE,
+      </if>
+      <if test="foreignLanguage != null">
+        FOREIGN_LANGUAGE,
+      </if>
+      <if test="idType != null">
+        ID_TYPE,
+      </if>
+      <if test="vipNo != null">
+        VIP_NO,
+      </if>
+      <if test="eName != null">
+        E_NAME,
+      </if>
+      <if test="photo != null">
+        PHOTO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="patientId != null">
+        #{patientId,jdbcType=VARCHAR},
+      </if>
+      <if test="inpNo != null">
+        #{inpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="namePhonetic != null">
+        #{namePhonetic,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="dateOfBirth != null">
+        #{dateOfBirth,jdbcType=DATE},
+      </if>
+      <if test="birthPlace != null">
+        #{birthPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="citizenship != null">
+        #{citizenship,jdbcType=VARCHAR},
+      </if>
+      <if test="nation != null">
+        #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="idNo != null">
+        #{idNo,jdbcType=VARCHAR},
+      </if>
+      <if test="identity != null">
+        #{identity,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeType != null">
+        #{chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="unitInContract != null">
+        #{unitInContract,jdbcType=VARCHAR},
+      </if>
+      <if test="mailingAddress != null">
+        #{mailingAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null">
+        #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumberHome != null">
+        #{phoneNumberHome,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumberBusiness != null">
+        #{phoneNumberBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="nextOfKin != null">
+        #{nextOfKin,jdbcType=VARCHAR},
+      </if>
+      <if test="relationship != null">
+        #{relationship,jdbcType=VARCHAR},
+      </if>
+      <if test="nextOfKinAddr != null">
+        #{nextOfKinAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="nextOfKinZipCode != null">
+        #{nextOfKinZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="nextOfKinPhone != null">
+        #{nextOfKinPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="lastVisitDate != null">
+        #{lastVisitDate,jdbcType=DATE},
+      </if>
+      <if test="vipIndicator != null">
+        #{vipIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceAgency != null">
+        #{serviceAgency,jdbcType=VARCHAR},
+      </if>
+      <if test="businessZipCode != null">
+        #{businessZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="patientClass != null">
+        #{patientClass,jdbcType=VARCHAR},
+      </if>
+      <if test="egree != null">
+        #{egree,jdbcType=VARCHAR},
+      </if>
+      <if test="race != null">
+        #{race,jdbcType=VARCHAR},
+      </if>
+      <if test="religion != null">
+        #{religion,jdbcType=VARCHAR},
+      </if>
+      <if test="motherLanguage != null">
+        #{motherLanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="foreignLanguage != null">
+        #{foreignLanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="idType != null">
+        #{idType,jdbcType=VARCHAR},
+      </if>
+      <if test="vipNo != null">
+        #{vipNo,jdbcType=VARCHAR},
+      </if>
+      <if test="eName != null">
+        #{eName,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        #{photo,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.joe.input.model.ItPatMasterIndexExample" resultType="java.lang.Long">
+    select count(*) from it_pat_master_index
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update it_pat_master_index
+    <set>
+      <if test="record.patientId != null">
+        PATIENT_ID = #{record.patientId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inpNo != null">
+        INP_NO = #{record.inpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.namePhonetic != null">
+        NAME_PHONETIC = #{record.namePhonetic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null">
+        SEX = #{record.sex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dateOfBirth != null">
+        DATE_OF_BIRTH = #{record.dateOfBirth,jdbcType=DATE},
+      </if>
+      <if test="record.birthPlace != null">
+        BIRTH_PLACE = #{record.birthPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.citizenship != null">
+        CITIZENSHIP = #{record.citizenship,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nation != null">
+        NATION = #{record.nation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idNo != null">
+        ID_NO = #{record.idNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.identity != null">
+        IDENTITY = #{record.identity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chargeType != null">
+        CHARGE_TYPE = #{record.chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unitInContract != null">
+        UNIT_IN_CONTRACT = #{record.unitInContract,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mailingAddress != null">
+        MAILING_ADDRESS = #{record.mailingAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zipCode != null">
+        ZIP_CODE = #{record.zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phoneNumberHome != null">
+        PHONE_NUMBER_HOME = #{record.phoneNumberHome,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phoneNumberBusiness != null">
+        PHONE_NUMBER_BUSINESS = #{record.phoneNumberBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nextOfKin != null">
+        NEXT_OF_KIN = #{record.nextOfKin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relationship != null">
+        RELATIONSHIP = #{record.relationship,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nextOfKinAddr != null">
+        NEXT_OF_KIN_ADDR = #{record.nextOfKinAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nextOfKinZipCode != null">
+        NEXT_OF_KIN_ZIP_CODE = #{record.nextOfKinZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nextOfKinPhone != null">
+        NEXT_OF_KIN_PHONE = #{record.nextOfKinPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastVisitDate != null">
+        LAST_VISIT_DATE = #{record.lastVisitDate,jdbcType=DATE},
+      </if>
+      <if test="record.vipIndicator != null">
+        VIP_INDICATOR = #{record.vipIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null">
+        CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.operator != null">
+        OPERATOR = #{record.operator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceAgency != null">
+        SERVICE_AGENCY = #{record.serviceAgency,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessZipCode != null">
+        BUSINESS_ZIP_CODE = #{record.businessZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patientClass != null">
+        PATIENT_CLASS = #{record.patientClass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.egree != null">
+        EGREE = #{record.egree,jdbcType=VARCHAR},
+      </if>
+      <if test="record.race != null">
+        RACE = #{record.race,jdbcType=VARCHAR},
+      </if>
+      <if test="record.religion != null">
+        RELIGION = #{record.religion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.motherLanguage != null">
+        MOTHER_LANGUAGE = #{record.motherLanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.foreignLanguage != null">
+        FOREIGN_LANGUAGE = #{record.foreignLanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idType != null">
+        ID_TYPE = #{record.idType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vipNo != null">
+        VIP_NO = #{record.vipNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.eName != null">
+        E_NAME = #{record.eName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photo != null">
+        PHOTO = #{record.photo,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update it_pat_master_index
+    set PATIENT_ID = #{record.patientId,jdbcType=VARCHAR},
+      INP_NO = #{record.inpNo,jdbcType=VARCHAR},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      NAME_PHONETIC = #{record.namePhonetic,jdbcType=VARCHAR},
+      SEX = #{record.sex,jdbcType=VARCHAR},
+      DATE_OF_BIRTH = #{record.dateOfBirth,jdbcType=DATE},
+      BIRTH_PLACE = #{record.birthPlace,jdbcType=VARCHAR},
+      CITIZENSHIP = #{record.citizenship,jdbcType=VARCHAR},
+      NATION = #{record.nation,jdbcType=VARCHAR},
+      ID_NO = #{record.idNo,jdbcType=VARCHAR},
+      IDENTITY = #{record.identity,jdbcType=VARCHAR},
+      CHARGE_TYPE = #{record.chargeType,jdbcType=VARCHAR},
+      UNIT_IN_CONTRACT = #{record.unitInContract,jdbcType=VARCHAR},
+      MAILING_ADDRESS = #{record.mailingAddress,jdbcType=VARCHAR},
+      ZIP_CODE = #{record.zipCode,jdbcType=VARCHAR},
+      PHONE_NUMBER_HOME = #{record.phoneNumberHome,jdbcType=VARCHAR},
+      PHONE_NUMBER_BUSINESS = #{record.phoneNumberBusiness,jdbcType=VARCHAR},
+      NEXT_OF_KIN = #{record.nextOfKin,jdbcType=VARCHAR},
+      RELATIONSHIP = #{record.relationship,jdbcType=VARCHAR},
+      NEXT_OF_KIN_ADDR = #{record.nextOfKinAddr,jdbcType=VARCHAR},
+      NEXT_OF_KIN_ZIP_CODE = #{record.nextOfKinZipCode,jdbcType=VARCHAR},
+      NEXT_OF_KIN_PHONE = #{record.nextOfKinPhone,jdbcType=VARCHAR},
+      LAST_VISIT_DATE = #{record.lastVisitDate,jdbcType=DATE},
+      VIP_INDICATOR = #{record.vipIndicator,jdbcType=INTEGER},
+      CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP},
+      OPERATOR = #{record.operator,jdbcType=VARCHAR},
+      SERVICE_AGENCY = #{record.serviceAgency,jdbcType=VARCHAR},
+      BUSINESS_ZIP_CODE = #{record.businessZipCode,jdbcType=VARCHAR},
+      PATIENT_CLASS = #{record.patientClass,jdbcType=VARCHAR},
+      EGREE = #{record.egree,jdbcType=VARCHAR},
+      RACE = #{record.race,jdbcType=VARCHAR},
+      RELIGION = #{record.religion,jdbcType=VARCHAR},
+      MOTHER_LANGUAGE = #{record.motherLanguage,jdbcType=VARCHAR},
+      FOREIGN_LANGUAGE = #{record.foreignLanguage,jdbcType=VARCHAR},
+      ID_TYPE = #{record.idType,jdbcType=VARCHAR},
+      VIP_NO = #{record.vipNo,jdbcType=VARCHAR},
+      E_NAME = #{record.eName,jdbcType=VARCHAR},
+      PHOTO = #{record.photo,jdbcType=LONGVARBINARY}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update it_pat_master_index
+    set PATIENT_ID = #{record.patientId,jdbcType=VARCHAR},
+      INP_NO = #{record.inpNo,jdbcType=VARCHAR},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      NAME_PHONETIC = #{record.namePhonetic,jdbcType=VARCHAR},
+      SEX = #{record.sex,jdbcType=VARCHAR},
+      DATE_OF_BIRTH = #{record.dateOfBirth,jdbcType=DATE},
+      BIRTH_PLACE = #{record.birthPlace,jdbcType=VARCHAR},
+      CITIZENSHIP = #{record.citizenship,jdbcType=VARCHAR},
+      NATION = #{record.nation,jdbcType=VARCHAR},
+      ID_NO = #{record.idNo,jdbcType=VARCHAR},
+      IDENTITY = #{record.identity,jdbcType=VARCHAR},
+      CHARGE_TYPE = #{record.chargeType,jdbcType=VARCHAR},
+      UNIT_IN_CONTRACT = #{record.unitInContract,jdbcType=VARCHAR},
+      MAILING_ADDRESS = #{record.mailingAddress,jdbcType=VARCHAR},
+      ZIP_CODE = #{record.zipCode,jdbcType=VARCHAR},
+      PHONE_NUMBER_HOME = #{record.phoneNumberHome,jdbcType=VARCHAR},
+      PHONE_NUMBER_BUSINESS = #{record.phoneNumberBusiness,jdbcType=VARCHAR},
+      NEXT_OF_KIN = #{record.nextOfKin,jdbcType=VARCHAR},
+      RELATIONSHIP = #{record.relationship,jdbcType=VARCHAR},
+      NEXT_OF_KIN_ADDR = #{record.nextOfKinAddr,jdbcType=VARCHAR},
+      NEXT_OF_KIN_ZIP_CODE = #{record.nextOfKinZipCode,jdbcType=VARCHAR},
+      NEXT_OF_KIN_PHONE = #{record.nextOfKinPhone,jdbcType=VARCHAR},
+      LAST_VISIT_DATE = #{record.lastVisitDate,jdbcType=DATE},
+      VIP_INDICATOR = #{record.vipIndicator,jdbcType=INTEGER},
+      CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP},
+      OPERATOR = #{record.operator,jdbcType=VARCHAR},
+      SERVICE_AGENCY = #{record.serviceAgency,jdbcType=VARCHAR},
+      BUSINESS_ZIP_CODE = #{record.businessZipCode,jdbcType=VARCHAR},
+      PATIENT_CLASS = #{record.patientClass,jdbcType=VARCHAR},
+      EGREE = #{record.egree,jdbcType=VARCHAR},
+      RACE = #{record.race,jdbcType=VARCHAR},
+      RELIGION = #{record.religion,jdbcType=VARCHAR},
+      MOTHER_LANGUAGE = #{record.motherLanguage,jdbcType=VARCHAR},
+      FOREIGN_LANGUAGE = #{record.foreignLanguage,jdbcType=VARCHAR},
+      ID_TYPE = #{record.idType,jdbcType=VARCHAR},
+      VIP_NO = #{record.vipNo,jdbcType=VARCHAR},
+      E_NAME = #{record.eName,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.joe.input.model.ItPatMasterIndex">
+    update it_pat_master_index
+    <set>
+      <if test="inpNo != null">
+        INP_NO = #{inpNo,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="namePhonetic != null">
+        NAME_PHONETIC = #{namePhonetic,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        SEX = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="dateOfBirth != null">
+        DATE_OF_BIRTH = #{dateOfBirth,jdbcType=DATE},
+      </if>
+      <if test="birthPlace != null">
+        BIRTH_PLACE = #{birthPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="citizenship != null">
+        CITIZENSHIP = #{citizenship,jdbcType=VARCHAR},
+      </if>
+      <if test="nation != null">
+        NATION = #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="idNo != null">
+        ID_NO = #{idNo,jdbcType=VARCHAR},
+      </if>
+      <if test="identity != null">
+        IDENTITY = #{identity,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeType != null">
+        CHARGE_TYPE = #{chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="unitInContract != null">
+        UNIT_IN_CONTRACT = #{unitInContract,jdbcType=VARCHAR},
+      </if>
+      <if test="mailingAddress != null">
+        MAILING_ADDRESS = #{mailingAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null">
+        ZIP_CODE = #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumberHome != null">
+        PHONE_NUMBER_HOME = #{phoneNumberHome,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumberBusiness != null">
+        PHONE_NUMBER_BUSINESS = #{phoneNumberBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="nextOfKin != null">
+        NEXT_OF_KIN = #{nextOfKin,jdbcType=VARCHAR},
+      </if>
+      <if test="relationship != null">
+        RELATIONSHIP = #{relationship,jdbcType=VARCHAR},
+      </if>
+      <if test="nextOfKinAddr != null">
+        NEXT_OF_KIN_ADDR = #{nextOfKinAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="nextOfKinZipCode != null">
+        NEXT_OF_KIN_ZIP_CODE = #{nextOfKinZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="nextOfKinPhone != null">
+        NEXT_OF_KIN_PHONE = #{nextOfKinPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="lastVisitDate != null">
+        LAST_VISIT_DATE = #{lastVisitDate,jdbcType=DATE},
+      </if>
+      <if test="vipIndicator != null">
+        VIP_INDICATOR = #{vipIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        OPERATOR = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceAgency != null">
+        SERVICE_AGENCY = #{serviceAgency,jdbcType=VARCHAR},
+      </if>
+      <if test="businessZipCode != null">
+        BUSINESS_ZIP_CODE = #{businessZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="patientClass != null">
+        PATIENT_CLASS = #{patientClass,jdbcType=VARCHAR},
+      </if>
+      <if test="egree != null">
+        EGREE = #{egree,jdbcType=VARCHAR},
+      </if>
+      <if test="race != null">
+        RACE = #{race,jdbcType=VARCHAR},
+      </if>
+      <if test="religion != null">
+        RELIGION = #{religion,jdbcType=VARCHAR},
+      </if>
+      <if test="motherLanguage != null">
+        MOTHER_LANGUAGE = #{motherLanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="foreignLanguage != null">
+        FOREIGN_LANGUAGE = #{foreignLanguage,jdbcType=VARCHAR},
+      </if>
+      <if test="idType != null">
+        ID_TYPE = #{idType,jdbcType=VARCHAR},
+      </if>
+      <if test="vipNo != null">
+        VIP_NO = #{vipNo,jdbcType=VARCHAR},
+      </if>
+      <if test="eName != null">
+        E_NAME = #{eName,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        PHOTO = #{photo,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where PATIENT_ID = #{patientId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.joe.input.model.ItPatMasterIndex">
+    update it_pat_master_index
+    set INP_NO = #{inpNo,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      NAME_PHONETIC = #{namePhonetic,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=VARCHAR},
+      DATE_OF_BIRTH = #{dateOfBirth,jdbcType=DATE},
+      BIRTH_PLACE = #{birthPlace,jdbcType=VARCHAR},
+      CITIZENSHIP = #{citizenship,jdbcType=VARCHAR},
+      NATION = #{nation,jdbcType=VARCHAR},
+      ID_NO = #{idNo,jdbcType=VARCHAR},
+      IDENTITY = #{identity,jdbcType=VARCHAR},
+      CHARGE_TYPE = #{chargeType,jdbcType=VARCHAR},
+      UNIT_IN_CONTRACT = #{unitInContract,jdbcType=VARCHAR},
+      MAILING_ADDRESS = #{mailingAddress,jdbcType=VARCHAR},
+      ZIP_CODE = #{zipCode,jdbcType=VARCHAR},
+      PHONE_NUMBER_HOME = #{phoneNumberHome,jdbcType=VARCHAR},
+      PHONE_NUMBER_BUSINESS = #{phoneNumberBusiness,jdbcType=VARCHAR},
+      NEXT_OF_KIN = #{nextOfKin,jdbcType=VARCHAR},
+      RELATIONSHIP = #{relationship,jdbcType=VARCHAR},
+      NEXT_OF_KIN_ADDR = #{nextOfKinAddr,jdbcType=VARCHAR},
+      NEXT_OF_KIN_ZIP_CODE = #{nextOfKinZipCode,jdbcType=VARCHAR},
+      NEXT_OF_KIN_PHONE = #{nextOfKinPhone,jdbcType=VARCHAR},
+      LAST_VISIT_DATE = #{lastVisitDate,jdbcType=DATE},
+      VIP_INDICATOR = #{vipIndicator,jdbcType=INTEGER},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      OPERATOR = #{operator,jdbcType=VARCHAR},
+      SERVICE_AGENCY = #{serviceAgency,jdbcType=VARCHAR},
+      BUSINESS_ZIP_CODE = #{businessZipCode,jdbcType=VARCHAR},
+      PATIENT_CLASS = #{patientClass,jdbcType=VARCHAR},
+      EGREE = #{egree,jdbcType=VARCHAR},
+      RACE = #{race,jdbcType=VARCHAR},
+      RELIGION = #{religion,jdbcType=VARCHAR},
+      MOTHER_LANGUAGE = #{motherLanguage,jdbcType=VARCHAR},
+      FOREIGN_LANGUAGE = #{foreignLanguage,jdbcType=VARCHAR},
+      ID_TYPE = #{idType,jdbcType=VARCHAR},
+      VIP_NO = #{vipNo,jdbcType=VARCHAR},
+      E_NAME = #{eName,jdbcType=VARCHAR},
+      PHOTO = #{photo,jdbcType=LONGVARBINARY}
+    where PATIENT_ID = #{patientId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.joe.input.model.ItPatMasterIndex">
+    update it_pat_master_index
+    set INP_NO = #{inpNo,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      NAME_PHONETIC = #{namePhonetic,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=VARCHAR},
+      DATE_OF_BIRTH = #{dateOfBirth,jdbcType=DATE},
+      BIRTH_PLACE = #{birthPlace,jdbcType=VARCHAR},
+      CITIZENSHIP = #{citizenship,jdbcType=VARCHAR},
+      NATION = #{nation,jdbcType=VARCHAR},
+      ID_NO = #{idNo,jdbcType=VARCHAR},
+      IDENTITY = #{identity,jdbcType=VARCHAR},
+      CHARGE_TYPE = #{chargeType,jdbcType=VARCHAR},
+      UNIT_IN_CONTRACT = #{unitInContract,jdbcType=VARCHAR},
+      MAILING_ADDRESS = #{mailingAddress,jdbcType=VARCHAR},
+      ZIP_CODE = #{zipCode,jdbcType=VARCHAR},
+      PHONE_NUMBER_HOME = #{phoneNumberHome,jdbcType=VARCHAR},
+      PHONE_NUMBER_BUSINESS = #{phoneNumberBusiness,jdbcType=VARCHAR},
+      NEXT_OF_KIN = #{nextOfKin,jdbcType=VARCHAR},
+      RELATIONSHIP = #{relationship,jdbcType=VARCHAR},
+      NEXT_OF_KIN_ADDR = #{nextOfKinAddr,jdbcType=VARCHAR},
+      NEXT_OF_KIN_ZIP_CODE = #{nextOfKinZipCode,jdbcType=VARCHAR},
+      NEXT_OF_KIN_PHONE = #{nextOfKinPhone,jdbcType=VARCHAR},
+      LAST_VISIT_DATE = #{lastVisitDate,jdbcType=DATE},
+      VIP_INDICATOR = #{vipIndicator,jdbcType=INTEGER},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      OPERATOR = #{operator,jdbcType=VARCHAR},
+      SERVICE_AGENCY = #{serviceAgency,jdbcType=VARCHAR},
+      BUSINESS_ZIP_CODE = #{businessZipCode,jdbcType=VARCHAR},
+      PATIENT_CLASS = #{patientClass,jdbcType=VARCHAR},
+      EGREE = #{egree,jdbcType=VARCHAR},
+      RACE = #{race,jdbcType=VARCHAR},
+      RELIGION = #{religion,jdbcType=VARCHAR},
+      MOTHER_LANGUAGE = #{motherLanguage,jdbcType=VARCHAR},
+      FOREIGN_LANGUAGE = #{foreignLanguage,jdbcType=VARCHAR},
+      ID_TYPE = #{idType,jdbcType=VARCHAR},
+      VIP_NO = #{vipNo,jdbcType=VARCHAR},
+      E_NAME = #{eName,jdbcType=VARCHAR}
+    where PATIENT_ID = #{patientId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByExampleWithBLOBsWithRowbounds" parameterType="com.joe.input.model.ItPatMasterIndexExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from it_pat_master_index
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExampleWithRowbounds" parameterType="com.joe.input.model.ItPatMasterIndexExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from it_pat_master_index
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

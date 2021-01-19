@@ -1,0 +1,8 @@
+*/target/
+/target/
+/log/
+*.log/*
+*.log
+/old-input/src/main/resources/datasourceConfig.properties
+.idea/
+*.iml

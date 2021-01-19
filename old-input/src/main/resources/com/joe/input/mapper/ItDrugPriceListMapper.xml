@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joe.input.mapper.ItDrugPriceListMapper">
+  <resultMap id="BaseResultMap" type="com.joe.input.model.ItDrugPriceList">
+    <id column="DRUG_CODE" jdbcType="VARCHAR" property="drugCode" />
+    <id column="DRUG_SPEC" jdbcType="VARCHAR" property="drugSpec" />
+    <id column="FIRM_ID" jdbcType="VARCHAR" property="firmId" />
+    <id column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="UNITS" jdbcType="VARCHAR" property="units" />
+    <result column="TRADE_PRICE" jdbcType="REAL" property="tradePrice" />
+    <result column="RETAIL_PRICE" jdbcType="REAL" property="retailPrice" />
+    <result column="AMOUNT_PER_PACKAGE" jdbcType="INTEGER" property="amountPerPackage" />
+    <result column="MIN_SPEC" jdbcType="VARCHAR" property="minSpec" />
+    <result column="MIN_UNITS" jdbcType="VARCHAR" property="minUnits" />
+    <result column="STOP_DATE" jdbcType="DATE" property="stopDate" />
+    <result column="MEMOS" jdbcType="VARCHAR" property="memos" />
+    <result column="CLASS_ON_INP_RCPT" jdbcType="VARCHAR" property="classOnInpRcpt" />
+    <result column="CLASS_ON_OUTP_RCPT" jdbcType="VARCHAR" property="classOnOutpRcpt" />
+    <result column="CLASS_ON_RECKONING" jdbcType="VARCHAR" property="classOnReckoning" />
+    <result column="SUBJ_CODE" jdbcType="VARCHAR" property="subjCode" />
+    <result column="CLASS_ON_MR" jdbcType="VARCHAR" property="classOnMr" />
+    <result column="HLIMIT_PRICE" jdbcType="REAL" property="hlimitPrice" />
+    <result column="PRICE_CLASS" jdbcType="VARCHAR" property="priceClass" />
+    <result column="PASS_NO" jdbcType="VARCHAR" property="passNo" />
+    <result column="GMP" jdbcType="INTEGER" property="gmp" />
+    <result column="CHANGED_MEMO" jdbcType="VARCHAR" property="changedMemo" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    DRUG_CODE, DRUG_SPEC, FIRM_ID, START_DATE, UNITS, TRADE_PRICE, RETAIL_PRICE, AMOUNT_PER_PACKAGE, 
+    MIN_SPEC, MIN_UNITS, STOP_DATE, MEMOS, CLASS_ON_INP_RCPT, CLASS_ON_OUTP_RCPT, CLASS_ON_RECKONING, 
+    SUBJ_CODE, CLASS_ON_MR, HLIMIT_PRICE, PRICE_CLASS, PASS_NO, GMP, CHANGED_MEMO
+  </sql>
+  <select id="selectByExample" parameterType="com.joe.input.model.ItDrugPriceListExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from it_drug_price_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from it_drug_price_list
+    where DRUG_CODE = #{drugCode,jdbcType=VARCHAR}
+      and DRUG_SPEC = #{drugSpec,jdbcType=VARCHAR}
+      and FIRM_ID = #{firmId,jdbcType=VARCHAR}
+      and START_DATE = #{startDate,jdbcType=TIMESTAMP}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from it_drug_price_list
+    where DRUG_CODE = #{drugCode,jdbcType=VARCHAR}
+      and DRUG_SPEC = #{drugSpec,jdbcType=VARCHAR}
+      and FIRM_ID = #{firmId,jdbcType=VARCHAR}
+      and START_DATE = #{startDate,jdbcType=TIMESTAMP}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.joe.input.model.ItDrugPriceListExample">
+    delete from it_drug_price_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.joe.input.model.ItDrugPriceList">
+    insert into it_drug_price_list (DRUG_CODE, DRUG_SPEC, FIRM_ID, 
+      START_DATE, UNITS, TRADE_PRICE, 
+      RETAIL_PRICE, AMOUNT_PER_PACKAGE, MIN_SPEC, 
+      MIN_UNITS, STOP_DATE, MEMOS, 
+      CLASS_ON_INP_RCPT, CLASS_ON_OUTP_RCPT, CLASS_ON_RECKONING, 
+      SUBJ_CODE, CLASS_ON_MR, HLIMIT_PRICE, 
+      PRICE_CLASS, PASS_NO, GMP, 
+      CHANGED_MEMO)
+    values (#{drugCode,jdbcType=VARCHAR}, #{drugSpec,jdbcType=VARCHAR}, #{firmId,jdbcType=VARCHAR}, 
+      #{startDate,jdbcType=TIMESTAMP}, #{units,jdbcType=VARCHAR}, #{tradePrice,jdbcType=REAL}, 
+      #{retailPrice,jdbcType=REAL}, #{amountPerPackage,jdbcType=INTEGER}, #{minSpec,jdbcType=VARCHAR}, 
+      #{minUnits,jdbcType=VARCHAR}, #{stopDate,jdbcType=DATE}, #{memos,jdbcType=VARCHAR}, 
+      #{classOnInpRcpt,jdbcType=VARCHAR}, #{classOnOutpRcpt,jdbcType=VARCHAR}, #{classOnReckoning,jdbcType=VARCHAR}, 
+      #{subjCode,jdbcType=VARCHAR}, #{classOnMr,jdbcType=VARCHAR}, #{hlimitPrice,jdbcType=REAL}, 
+      #{priceClass,jdbcType=VARCHAR}, #{passNo,jdbcType=VARCHAR}, #{gmp,jdbcType=INTEGER}, 
+      #{changedMemo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.joe.input.model.ItDrugPriceList">
+    insert into it_drug_price_list
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="drugCode != null">
+        DRUG_CODE,
+      </if>
+      <if test="drugSpec != null">
+        DRUG_SPEC,
+      </if>
+      <if test="firmId != null">
+        FIRM_ID,
+      </if>
+      <if test="startDate != null">
+        START_DATE,
+      </if>
+      <if test="units != null">
+        UNITS,
+      </if>
+      <if test="tradePrice != null">
+        TRADE_PRICE,
+      </if>
+      <if test="retailPrice != null">
+        RETAIL_PRICE,
+      </if>
+      <if test="amountPerPackage != null">
+        AMOUNT_PER_PACKAGE,
+      </if>
+      <if test="minSpec != null">
+        MIN_SPEC,
+      </if>
+      <if test="minUnits != null">
+        MIN_UNITS,
+      </if>
+      <if test="stopDate != null">
+        STOP_DATE,
+      </if>
+      <if test="memos != null">
+        MEMOS,
+      </if>
+      <if test="classOnInpRcpt != null">
+        CLASS_ON_INP_RCPT,
+      </if>
+      <if test="classOnOutpRcpt != null">
+        CLASS_ON_OUTP_RCPT,
+      </if>
+      <if test="classOnReckoning != null">
+        CLASS_ON_RECKONING,
+      </if>
+      <if test="subjCode != null">
+        SUBJ_CODE,
+      </if>
+      <if test="classOnMr != null">
+        CLASS_ON_MR,
+      </if>
+      <if test="hlimitPrice != null">
+        HLIMIT_PRICE,
+      </if>
+      <if test="priceClass != null">
+        PRICE_CLASS,
+      </if>
+      <if test="passNo != null">
+        PASS_NO,
+      </if>
+      <if test="gmp != null">
+        GMP,
+      </if>
+      <if test="changedMemo != null">
+        CHANGED_MEMO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="drugCode != null">
+        #{drugCode,jdbcType=VARCHAR},
+      </if>
+      <if test="drugSpec != null">
+        #{drugSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="firmId != null">
+        #{firmId,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="units != null">
+        #{units,jdbcType=VARCHAR},
+      </if>
+      <if test="tradePrice != null">
+        #{tradePrice,jdbcType=REAL},
+      </if>
+      <if test="retailPrice != null">
+        #{retailPrice,jdbcType=REAL},
+      </if>
+      <if test="amountPerPackage != null">
+        #{amountPerPackage,jdbcType=INTEGER},
+      </if>
+      <if test="minSpec != null">
+        #{minSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="minUnits != null">
+        #{minUnits,jdbcType=VARCHAR},
+      </if>
+      <if test="stopDate != null">
+        #{stopDate,jdbcType=DATE},
+      </if>
+      <if test="memos != null">
+        #{memos,jdbcType=VARCHAR},
+      </if>
+      <if test="classOnInpRcpt != null">
+        #{classOnInpRcpt,jdbcType=VARCHAR},
+      </if>
+      <if test="classOnOutpRcpt != null">
+        #{classOnOutpRcpt,jdbcType=VARCHAR},
+      </if>
+      <if test="classOnReckoning != null">
+        #{classOnReckoning,jdbcType=VARCHAR},
+      </if>
+      <if test="subjCode != null">
+        #{subjCode,jdbcType=VARCHAR},
+      </if>
+      <if test="classOnMr != null">
+        #{classOnMr,jdbcType=VARCHAR},
+      </if>
+      <if test="hlimitPrice != null">
+        #{hlimitPrice,jdbcType=REAL},
+      </if>
+      <if test="priceClass != null">
+        #{priceClass,jdbcType=VARCHAR},
+      </if>
+      <if test="passNo != null">
+        #{passNo,jdbcType=VARCHAR},
+      </if>
+      <if test="gmp != null">
+        #{gmp,jdbcType=INTEGER},
+      </if>
+      <if test="changedMemo != null">
+        #{changedMemo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.joe.input.model.ItDrugPriceListExample" resultType="java.lang.Long">
+    select count(*) from it_drug_price_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update it_drug_price_list
+    <set>
+      <if test="record.drugCode != null">
+        DRUG_CODE = #{record.drugCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.drugSpec != null">
+        DRUG_SPEC = #{record.drugSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="record.firmId != null">
+        FIRM_ID = #{record.firmId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startDate != null">
+        START_DATE = #{record.startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.units != null">
+        UNITS = #{record.units,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tradePrice != null">
+        TRADE_PRICE = #{record.tradePrice,jdbcType=REAL},
+      </if>
+      <if test="record.retailPrice != null">
+        RETAIL_PRICE = #{record.retailPrice,jdbcType=REAL},
+      </if>
+      <if test="record.amountPerPackage != null">
+        AMOUNT_PER_PACKAGE = #{record.amountPerPackage,jdbcType=INTEGER},
+      </if>
+      <if test="record.minSpec != null">
+        MIN_SPEC = #{record.minSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="record.minUnits != null">
+        MIN_UNITS = #{record.minUnits,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stopDate != null">
+        STOP_DATE = #{record.stopDate,jdbcType=DATE},
+      </if>
+      <if test="record.memos != null">
+        MEMOS = #{record.memos,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classOnInpRcpt != null">
+        CLASS_ON_INP_RCPT = #{record.classOnInpRcpt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classOnOutpRcpt != null">
+        CLASS_ON_OUTP_RCPT = #{record.classOnOutpRcpt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classOnReckoning != null">
+        CLASS_ON_RECKONING = #{record.classOnReckoning,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subjCode != null">
+        SUBJ_CODE = #{record.subjCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classOnMr != null">
+        CLASS_ON_MR = #{record.classOnMr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hlimitPrice != null">
+        HLIMIT_PRICE = #{record.hlimitPrice,jdbcType=REAL},
+      </if>
+      <if test="record.priceClass != null">
+        PRICE_CLASS = #{record.priceClass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.passNo != null">
+        PASS_NO = #{record.passNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmp != null">
+        GMP = #{record.gmp,jdbcType=INTEGER},
+      </if>
+      <if test="record.changedMemo != null">
+        CHANGED_MEMO = #{record.changedMemo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update it_drug_price_list
+    set DRUG_CODE = #{record.drugCode,jdbcType=VARCHAR},
+      DRUG_SPEC = #{record.drugSpec,jdbcType=VARCHAR},
+      FIRM_ID = #{record.firmId,jdbcType=VARCHAR},
+      START_DATE = #{record.startDate,jdbcType=TIMESTAMP},
+      UNITS = #{record.units,jdbcType=VARCHAR},
+      TRADE_PRICE = #{record.tradePrice,jdbcType=REAL},
+      RETAIL_PRICE = #{record.retailPrice,jdbcType=REAL},
+      AMOUNT_PER_PACKAGE = #{record.amountPerPackage,jdbcType=INTEGER},
+      MIN_SPEC = #{record.minSpec,jdbcType=VARCHAR},
+      MIN_UNITS = #{record.minUnits,jdbcType=VARCHAR},
+      STOP_DATE = #{record.stopDate,jdbcType=DATE},
+      MEMOS = #{record.memos,jdbcType=VARCHAR},
+      CLASS_ON_INP_RCPT = #{record.classOnInpRcpt,jdbcType=VARCHAR},
+      CLASS_ON_OUTP_RCPT = #{record.classOnOutpRcpt,jdbcType=VARCHAR},
+      CLASS_ON_RECKONING = #{record.classOnReckoning,jdbcType=VARCHAR},
+      SUBJ_CODE = #{record.subjCode,jdbcType=VARCHAR},
+      CLASS_ON_MR = #{record.classOnMr,jdbcType=VARCHAR},
+      HLIMIT_PRICE = #{record.hlimitPrice,jdbcType=REAL},
+      PRICE_CLASS = #{record.priceClass,jdbcType=VARCHAR},
+      PASS_NO = #{record.passNo,jdbcType=VARCHAR},
+      GMP = #{record.gmp,jdbcType=INTEGER},
+      CHANGED_MEMO = #{record.changedMemo,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.joe.input.model.ItDrugPriceList">
+    update it_drug_price_list
+    <set>
+      <if test="units != null">
+        UNITS = #{units,jdbcType=VARCHAR},
+      </if>
+      <if test="tradePrice != null">
+        TRADE_PRICE = #{tradePrice,jdbcType=REAL},
+      </if>
+      <if test="retailPrice != null">
+        RETAIL_PRICE = #{retailPrice,jdbcType=REAL},
+      </if>
+      <if test="amountPerPackage != null">
+        AMOUNT_PER_PACKAGE = #{amountPerPackage,jdbcType=INTEGER},
+      </if>
+      <if test="minSpec != null">
+        MIN_SPEC = #{minSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="minUnits != null">
+        MIN_UNITS = #{minUnits,jdbcType=VARCHAR},
+      </if>
+      <if test="stopDate != null">
+        STOP_DATE = #{stopDate,jdbcType=DATE},
+      </if>
+      <if test="memos != null">
+        MEMOS = #{memos,jdbcType=VARCHAR},
+      </if>
+      <if test="classOnInpRcpt != null">
+        CLASS_ON_INP_RCPT = #{classOnInpRcpt,jdbcType=VARCHAR},
+      </if>
+      <if test="classOnOutpRcpt != null">
+        CLASS_ON_OUTP_RCPT = #{classOnOutpRcpt,jdbcType=VARCHAR},
+      </if>
+      <if test="classOnReckoning != null">
+        CLASS_ON_RECKONING = #{classOnReckoning,jdbcType=VARCHAR},
+      </if>
+      <if test="subjCode != null">
+        SUBJ_CODE = #{subjCode,jdbcType=VARCHAR},
+      </if>
+      <if test="classOnMr != null">
+        CLASS_ON_MR = #{classOnMr,jdbcType=VARCHAR},
+      </if>
+      <if test="hlimitPrice != null">
+        HLIMIT_PRICE = #{hlimitPrice,jdbcType=REAL},
+      </if>
+      <if test="priceClass != null">
+        PRICE_CLASS = #{priceClass,jdbcType=VARCHAR},
+      </if>
+      <if test="passNo != null">
+        PASS_NO = #{passNo,jdbcType=VARCHAR},
+      </if>
+      <if test="gmp != null">
+        GMP = #{gmp,jdbcType=INTEGER},
+      </if>
+      <if test="changedMemo != null">
+        CHANGED_MEMO = #{changedMemo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DRUG_CODE = #{drugCode,jdbcType=VARCHAR}
+      and DRUG_SPEC = #{drugSpec,jdbcType=VARCHAR}
+      and FIRM_ID = #{firmId,jdbcType=VARCHAR}
+      and START_DATE = #{startDate,jdbcType=TIMESTAMP}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.joe.input.model.ItDrugPriceList">
+    update it_drug_price_list
+    set UNITS = #{units,jdbcType=VARCHAR},
+      TRADE_PRICE = #{tradePrice,jdbcType=REAL},
+      RETAIL_PRICE = #{retailPrice,jdbcType=REAL},
+      AMOUNT_PER_PACKAGE = #{amountPerPackage,jdbcType=INTEGER},
+      MIN_SPEC = #{minSpec,jdbcType=VARCHAR},
+      MIN_UNITS = #{minUnits,jdbcType=VARCHAR},
+      STOP_DATE = #{stopDate,jdbcType=DATE},
+      MEMOS = #{memos,jdbcType=VARCHAR},
+      CLASS_ON_INP_RCPT = #{classOnInpRcpt,jdbcType=VARCHAR},
+      CLASS_ON_OUTP_RCPT = #{classOnOutpRcpt,jdbcType=VARCHAR},
+      CLASS_ON_RECKONING = #{classOnReckoning,jdbcType=VARCHAR},
+      SUBJ_CODE = #{subjCode,jdbcType=VARCHAR},
+      CLASS_ON_MR = #{classOnMr,jdbcType=VARCHAR},
+      HLIMIT_PRICE = #{hlimitPrice,jdbcType=REAL},
+      PRICE_CLASS = #{priceClass,jdbcType=VARCHAR},
+      PASS_NO = #{passNo,jdbcType=VARCHAR},
+      GMP = #{gmp,jdbcType=INTEGER},
+      CHANGED_MEMO = #{changedMemo,jdbcType=VARCHAR}
+    where DRUG_CODE = #{drugCode,jdbcType=VARCHAR}
+      and DRUG_SPEC = #{drugSpec,jdbcType=VARCHAR}
+      and FIRM_ID = #{firmId,jdbcType=VARCHAR}
+      and START_DATE = #{startDate,jdbcType=TIMESTAMP}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.joe.input.model.ItDrugPriceListExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from it_drug_price_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joe.input.mapper.ItDiagnosisDictMapper">
+  <resultMap id="BaseResultMap" type="com.joe.input.model.ItDiagnosisDict">
+    <id column="DIAGNOSIS_CODE" jdbcType="VARCHAR" property="diagnosisCode" />
+    <id column="DIAGNOSIS_NAME" jdbcType="VARCHAR" property="diagnosisName" />
+    <result column="STD_INDICATOR" jdbcType="INTEGER" property="stdIndicator" />
+    <result column="APPROVED_INDICATOR" jdbcType="INTEGER" property="approvedIndicator" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="INPUT_CODE" jdbcType="VARCHAR" property="inputCode" />
+    <result column="HEALTH_LEVEL" jdbcType="VARCHAR" property="healthLevel" />
+    <result column="INFECT_INDICATOR" jdbcType="VARCHAR" property="infectIndicator" />
+    <result column="INPUT_CODE_WB" jdbcType="VARCHAR" property="inputCodeWb" />
+    <result column="DIAG_INDICATOR" jdbcType="INTEGER" property="diagIndicator" />
+    <result column="NM1" jdbcType="VARCHAR" property="nm1" />
+    <result column="NM2" jdbcType="VARCHAR" property="nm2" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    DIAGNOSIS_CODE, DIAGNOSIS_NAME, STD_INDICATOR, APPROVED_INDICATOR, CREATE_DATE, INPUT_CODE, 
+    HEALTH_LEVEL, INFECT_INDICATOR, INPUT_CODE_WB, DIAG_INDICATOR, NM1, NM2
+  </sql>
+  <select id="selectByExample" parameterType="com.joe.input.model.ItDiagnosisDictExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from it_diagnosis_dict
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from it_diagnosis_dict
+    where DIAGNOSIS_CODE = #{diagnosisCode,jdbcType=VARCHAR}
+      and DIAGNOSIS_NAME = #{diagnosisName,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from it_diagnosis_dict
+    where DIAGNOSIS_CODE = #{diagnosisCode,jdbcType=VARCHAR}
+      and DIAGNOSIS_NAME = #{diagnosisName,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.joe.input.model.ItDiagnosisDictExample">
+    delete from it_diagnosis_dict
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.joe.input.model.ItDiagnosisDict">
+    insert into it_diagnosis_dict (DIAGNOSIS_CODE, DIAGNOSIS_NAME, STD_INDICATOR, 
+      APPROVED_INDICATOR, CREATE_DATE, INPUT_CODE, 
+      HEALTH_LEVEL, INFECT_INDICATOR, INPUT_CODE_WB, 
+      DIAG_INDICATOR, NM1, NM2
+      )
+    values (#{diagnosisCode,jdbcType=VARCHAR}, #{diagnosisName,jdbcType=VARCHAR}, #{stdIndicator,jdbcType=INTEGER}, 
+      #{approvedIndicator,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{inputCode,jdbcType=VARCHAR}, 
+      #{healthLevel,jdbcType=VARCHAR}, #{infectIndicator,jdbcType=VARCHAR}, #{inputCodeWb,jdbcType=VARCHAR}, 
+      #{diagIndicator,jdbcType=INTEGER}, #{nm1,jdbcType=VARCHAR}, #{nm2,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.joe.input.model.ItDiagnosisDict">
+    insert into it_diagnosis_dict
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="diagnosisCode != null">
+        DIAGNOSIS_CODE,
+      </if>
+      <if test="diagnosisName != null">
+        DIAGNOSIS_NAME,
+      </if>
+      <if test="stdIndicator != null">
+        STD_INDICATOR,
+      </if>
+      <if test="approvedIndicator != null">
+        APPROVED_INDICATOR,
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="inputCode != null">
+        INPUT_CODE,
+      </if>
+      <if test="healthLevel != null">
+        HEALTH_LEVEL,
+      </if>
+      <if test="infectIndicator != null">
+        INFECT_INDICATOR,
+      </if>
+      <if test="inputCodeWb != null">
+        INPUT_CODE_WB,
+      </if>
+      <if test="diagIndicator != null">
+        DIAG_INDICATOR,
+      </if>
+      <if test="nm1 != null">
+        NM1,
+      </if>
+      <if test="nm2 != null">
+        NM2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="diagnosisCode != null">
+        #{diagnosisCode,jdbcType=VARCHAR},
+      </if>
+      <if test="diagnosisName != null">
+        #{diagnosisName,jdbcType=VARCHAR},
+      </if>
+      <if test="stdIndicator != null">
+        #{stdIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="approvedIndicator != null">
+        #{approvedIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inputCode != null">
+        #{inputCode,jdbcType=VARCHAR},
+      </if>
+      <if test="healthLevel != null">
+        #{healthLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="infectIndicator != null">
+        #{infectIndicator,jdbcType=VARCHAR},
+      </if>
+      <if test="inputCodeWb != null">
+        #{inputCodeWb,jdbcType=VARCHAR},
+      </if>
+      <if test="diagIndicator != null">
+        #{diagIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="nm1 != null">
+        #{nm1,jdbcType=VARCHAR},
+      </if>
+      <if test="nm2 != null">
+        #{nm2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.joe.input.model.ItDiagnosisDictExample" resultType="java.lang.Long">
+    select count(*) from it_diagnosis_dict
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update it_diagnosis_dict
+    <set>
+      <if test="record.diagnosisCode != null">
+        DIAGNOSIS_CODE = #{record.diagnosisCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.diagnosisName != null">
+        DIAGNOSIS_NAME = #{record.diagnosisName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stdIndicator != null">
+        STD_INDICATOR = #{record.stdIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="record.approvedIndicator != null">
+        APPROVED_INDICATOR = #{record.approvedIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null">
+        CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.inputCode != null">
+        INPUT_CODE = #{record.inputCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.healthLevel != null">
+        HEALTH_LEVEL = #{record.healthLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.infectIndicator != null">
+        INFECT_INDICATOR = #{record.infectIndicator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inputCodeWb != null">
+        INPUT_CODE_WB = #{record.inputCodeWb,jdbcType=VARCHAR},
+      </if>
+      <if test="record.diagIndicator != null">
+        DIAG_INDICATOR = #{record.diagIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="record.nm1 != null">
+        NM1 = #{record.nm1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nm2 != null">
+        NM2 = #{record.nm2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update it_diagnosis_dict
+    set DIAGNOSIS_CODE = #{record.diagnosisCode,jdbcType=VARCHAR},
+      DIAGNOSIS_NAME = #{record.diagnosisName,jdbcType=VARCHAR},
+      STD_INDICATOR = #{record.stdIndicator,jdbcType=INTEGER},
+      APPROVED_INDICATOR = #{record.approvedIndicator,jdbcType=INTEGER},
+      CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP},
+      INPUT_CODE = #{record.inputCode,jdbcType=VARCHAR},
+      HEALTH_LEVEL = #{record.healthLevel,jdbcType=VARCHAR},
+      INFECT_INDICATOR = #{record.infectIndicator,jdbcType=VARCHAR},
+      INPUT_CODE_WB = #{record.inputCodeWb,jdbcType=VARCHAR},
+      DIAG_INDICATOR = #{record.diagIndicator,jdbcType=INTEGER},
+      NM1 = #{record.nm1,jdbcType=VARCHAR},
+      NM2 = #{record.nm2,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.joe.input.model.ItDiagnosisDict">
+    update it_diagnosis_dict
+    <set>
+      <if test="stdIndicator != null">
+        STD_INDICATOR = #{stdIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="approvedIndicator != null">
+        APPROVED_INDICATOR = #{approvedIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inputCode != null">
+        INPUT_CODE = #{inputCode,jdbcType=VARCHAR},
+      </if>
+      <if test="healthLevel != null">
+        HEALTH_LEVEL = #{healthLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="infectIndicator != null">
+        INFECT_INDICATOR = #{infectIndicator,jdbcType=VARCHAR},
+      </if>
+      <if test="inputCodeWb != null">
+        INPUT_CODE_WB = #{inputCodeWb,jdbcType=VARCHAR},
+      </if>
+      <if test="diagIndicator != null">
+        DIAG_INDICATOR = #{diagIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="nm1 != null">
+        NM1 = #{nm1,jdbcType=VARCHAR},
+      </if>
+      <if test="nm2 != null">
+        NM2 = #{nm2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DIAGNOSIS_CODE = #{diagnosisCode,jdbcType=VARCHAR}
+      and DIAGNOSIS_NAME = #{diagnosisName,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.joe.input.model.ItDiagnosisDict">
+    update it_diagnosis_dict
+    set STD_INDICATOR = #{stdIndicator,jdbcType=INTEGER},
+      APPROVED_INDICATOR = #{approvedIndicator,jdbcType=INTEGER},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      INPUT_CODE = #{inputCode,jdbcType=VARCHAR},
+      HEALTH_LEVEL = #{healthLevel,jdbcType=VARCHAR},
+      INFECT_INDICATOR = #{infectIndicator,jdbcType=VARCHAR},
+      INPUT_CODE_WB = #{inputCodeWb,jdbcType=VARCHAR},
+      DIAG_INDICATOR = #{diagIndicator,jdbcType=INTEGER},
+      NM1 = #{nm1,jdbcType=VARCHAR},
+      NM2 = #{nm2,jdbcType=VARCHAR}
+    where DIAGNOSIS_CODE = #{diagnosisCode,jdbcType=VARCHAR}
+      and DIAGNOSIS_NAME = #{diagnosisName,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.joe.input.model.ItDiagnosisDictExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from it_diagnosis_dict
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

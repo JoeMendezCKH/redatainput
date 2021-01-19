@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joe.input.mapper.ItDeptDictMapper">
+  <resultMap id="BaseResultMap" type="com.joe.input.model.ItDeptDict">
+    <id column="DEPT_CODE" jdbcType="VARCHAR" property="deptCode" />
+    <result column="SERIAL_NO" jdbcType="INTEGER" property="serialNo" />
+    <result column="DEPT_NAME" jdbcType="VARCHAR" property="deptName" />
+    <result column="DEPT_ALIAS" jdbcType="VARCHAR" property="deptAlias" />
+    <result column="CLINIC_ATTR" jdbcType="INTEGER" property="clinicAttr" />
+    <result column="OUTP_OR_INP" jdbcType="INTEGER" property="outpOrInp" />
+    <result column="INTERNAL_OR_SERGERY" jdbcType="INTEGER" property="internalOrSergery" />
+    <result column="INPUT_CODE" jdbcType="VARCHAR" property="inputCode" />
+    <result column="POSITION" jdbcType="VARCHAR" property="position" />
+    <result column="SIGN" jdbcType="VARCHAR" property="sign" />
+    <result column="INPUT_CODE_WB" jdbcType="VARCHAR" property="inputCodeWb" />
+    <result column="DISPENSING_CUMULATE" jdbcType="INTEGER" property="dispensingCumulate" />
+    <result column="VIRTUAL_CABINET" jdbcType="INTEGER" property="virtualCabinet" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    DEPT_CODE, SERIAL_NO, DEPT_NAME, DEPT_ALIAS, CLINIC_ATTR, OUTP_OR_INP, INTERNAL_OR_SERGERY, 
+    INPUT_CODE, POSITION, SIGN, INPUT_CODE_WB, DISPENSING_CUMULATE, VIRTUAL_CABINET
+  </sql>
+  <select id="selectByExample" parameterType="com.joe.input.model.ItDeptDictExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from it_dept_dict
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from it_dept_dict
+    where DEPT_CODE = #{deptCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from it_dept_dict
+    where DEPT_CODE = #{deptCode,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.joe.input.model.ItDeptDictExample">
+    delete from it_dept_dict
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.joe.input.model.ItDeptDict">
+    insert into it_dept_dict (DEPT_CODE, SERIAL_NO, DEPT_NAME, 
+      DEPT_ALIAS, CLINIC_ATTR, OUTP_OR_INP, 
+      INTERNAL_OR_SERGERY, INPUT_CODE, POSITION, 
+      SIGN, INPUT_CODE_WB, DISPENSING_CUMULATE, 
+      VIRTUAL_CABINET)
+    values (#{deptCode,jdbcType=VARCHAR}, #{serialNo,jdbcType=INTEGER}, #{deptName,jdbcType=VARCHAR}, 
+      #{deptAlias,jdbcType=VARCHAR}, #{clinicAttr,jdbcType=INTEGER}, #{outpOrInp,jdbcType=INTEGER}, 
+      #{internalOrSergery,jdbcType=INTEGER}, #{inputCode,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, 
+      #{sign,jdbcType=VARCHAR}, #{inputCodeWb,jdbcType=VARCHAR}, #{dispensingCumulate,jdbcType=INTEGER}, 
+      #{virtualCabinet,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.joe.input.model.ItDeptDict">
+    insert into it_dept_dict
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="deptCode != null">
+        DEPT_CODE,
+      </if>
+      <if test="serialNo != null">
+        SERIAL_NO,
+      </if>
+      <if test="deptName != null">
+        DEPT_NAME,
+      </if>
+      <if test="deptAlias != null">
+        DEPT_ALIAS,
+      </if>
+      <if test="clinicAttr != null">
+        CLINIC_ATTR,
+      </if>
+      <if test="outpOrInp != null">
+        OUTP_OR_INP,
+      </if>
+      <if test="internalOrSergery != null">
+        INTERNAL_OR_SERGERY,
+      </if>
+      <if test="inputCode != null">
+        INPUT_CODE,
+      </if>
+      <if test="position != null">
+        POSITION,
+      </if>
+      <if test="sign != null">
+        SIGN,
+      </if>
+      <if test="inputCodeWb != null">
+        INPUT_CODE_WB,
+      </if>
+      <if test="dispensingCumulate != null">
+        DISPENSING_CUMULATE,
+      </if>
+      <if test="virtualCabinet != null">
+        VIRTUAL_CABINET,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="deptCode != null">
+        #{deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNo != null">
+        #{serialNo,jdbcType=INTEGER},
+      </if>
+      <if test="deptName != null">
+        #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptAlias != null">
+        #{deptAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="clinicAttr != null">
+        #{clinicAttr,jdbcType=INTEGER},
+      </if>
+      <if test="outpOrInp != null">
+        #{outpOrInp,jdbcType=INTEGER},
+      </if>
+      <if test="internalOrSergery != null">
+        #{internalOrSergery,jdbcType=INTEGER},
+      </if>
+      <if test="inputCode != null">
+        #{inputCode,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null">
+        #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="inputCodeWb != null">
+        #{inputCodeWb,jdbcType=VARCHAR},
+      </if>
+      <if test="dispensingCumulate != null">
+        #{dispensingCumulate,jdbcType=INTEGER},
+      </if>
+      <if test="virtualCabinet != null">
+        #{virtualCabinet,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.joe.input.model.ItDeptDictExample" resultType="java.lang.Long">
+    select count(*) from it_dept_dict
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update it_dept_dict
+    <set>
+      <if test="record.deptCode != null">
+        DEPT_CODE = #{record.deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serialNo != null">
+        SERIAL_NO = #{record.serialNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.deptName != null">
+        DEPT_NAME = #{record.deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deptAlias != null">
+        DEPT_ALIAS = #{record.deptAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clinicAttr != null">
+        CLINIC_ATTR = #{record.clinicAttr,jdbcType=INTEGER},
+      </if>
+      <if test="record.outpOrInp != null">
+        OUTP_OR_INP = #{record.outpOrInp,jdbcType=INTEGER},
+      </if>
+      <if test="record.internalOrSergery != null">
+        INTERNAL_OR_SERGERY = #{record.internalOrSergery,jdbcType=INTEGER},
+      </if>
+      <if test="record.inputCode != null">
+        INPUT_CODE = #{record.inputCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.position != null">
+        POSITION = #{record.position,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sign != null">
+        SIGN = #{record.sign,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inputCodeWb != null">
+        INPUT_CODE_WB = #{record.inputCodeWb,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dispensingCumulate != null">
+        DISPENSING_CUMULATE = #{record.dispensingCumulate,jdbcType=INTEGER},
+      </if>
+      <if test="record.virtualCabinet != null">
+        VIRTUAL_CABINET = #{record.virtualCabinet,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update it_dept_dict
+    set DEPT_CODE = #{record.deptCode,jdbcType=VARCHAR},
+      SERIAL_NO = #{record.serialNo,jdbcType=INTEGER},
+      DEPT_NAME = #{record.deptName,jdbcType=VARCHAR},
+      DEPT_ALIAS = #{record.deptAlias,jdbcType=VARCHAR},
+      CLINIC_ATTR = #{record.clinicAttr,jdbcType=INTEGER},
+      OUTP_OR_INP = #{record.outpOrInp,jdbcType=INTEGER},
+      INTERNAL_OR_SERGERY = #{record.internalOrSergery,jdbcType=INTEGER},
+      INPUT_CODE = #{record.inputCode,jdbcType=VARCHAR},
+      POSITION = #{record.position,jdbcType=VARCHAR},
+      SIGN = #{record.sign,jdbcType=VARCHAR},
+      INPUT_CODE_WB = #{record.inputCodeWb,jdbcType=VARCHAR},
+      DISPENSING_CUMULATE = #{record.dispensingCumulate,jdbcType=INTEGER},
+      VIRTUAL_CABINET = #{record.virtualCabinet,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.joe.input.model.ItDeptDict">
+    update it_dept_dict
+    <set>
+      <if test="serialNo != null">
+        SERIAL_NO = #{serialNo,jdbcType=INTEGER},
+      </if>
+      <if test="deptName != null">
+        DEPT_NAME = #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptAlias != null">
+        DEPT_ALIAS = #{deptAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="clinicAttr != null">
+        CLINIC_ATTR = #{clinicAttr,jdbcType=INTEGER},
+      </if>
+      <if test="outpOrInp != null">
+        OUTP_OR_INP = #{outpOrInp,jdbcType=INTEGER},
+      </if>
+      <if test="internalOrSergery != null">
+        INTERNAL_OR_SERGERY = #{internalOrSergery,jdbcType=INTEGER},
+      </if>
+      <if test="inputCode != null">
+        INPUT_CODE = #{inputCode,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null">
+        POSITION = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null">
+        SIGN = #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="inputCodeWb != null">
+        INPUT_CODE_WB = #{inputCodeWb,jdbcType=VARCHAR},
+      </if>
+      <if test="dispensingCumulate != null">
+        DISPENSING_CUMULATE = #{dispensingCumulate,jdbcType=INTEGER},
+      </if>
+      <if test="virtualCabinet != null">
+        VIRTUAL_CABINET = #{virtualCabinet,jdbcType=INTEGER},
+      </if>
+    </set>
+    where DEPT_CODE = #{deptCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.joe.input.model.ItDeptDict">
+    update it_dept_dict
+    set SERIAL_NO = #{serialNo,jdbcType=INTEGER},
+      DEPT_NAME = #{deptName,jdbcType=VARCHAR},
+      DEPT_ALIAS = #{deptAlias,jdbcType=VARCHAR},
+      CLINIC_ATTR = #{clinicAttr,jdbcType=INTEGER},
+      OUTP_OR_INP = #{outpOrInp,jdbcType=INTEGER},
+      INTERNAL_OR_SERGERY = #{internalOrSergery,jdbcType=INTEGER},
+      INPUT_CODE = #{inputCode,jdbcType=VARCHAR},
+      POSITION = #{position,jdbcType=VARCHAR},
+      SIGN = #{sign,jdbcType=VARCHAR},
+      INPUT_CODE_WB = #{inputCodeWb,jdbcType=VARCHAR},
+      DISPENSING_CUMULATE = #{dispensingCumulate,jdbcType=INTEGER},
+      VIRTUAL_CABINET = #{virtualCabinet,jdbcType=INTEGER}
+    where DEPT_CODE = #{deptCode,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.joe.input.model.ItDeptDictExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from it_dept_dict
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.joe.input.mapper.ItDrugDictMapper">
+  <resultMap id="BaseResultMap" type="com.joe.input.model.ItDrugDict">
+    <id column="DRUG_CODE" jdbcType="VARCHAR" property="drugCode" />
+    <id column="DRUG_SPEC" jdbcType="VARCHAR" property="drugSpec" />
+    <id column="DRUG_INDICATOR" jdbcType="INTEGER" property="drugIndicator" />
+    <result column="DRUG_NAME" jdbcType="VARCHAR" property="drugName" />
+    <result column="UNITS" jdbcType="VARCHAR" property="units" />
+    <result column="DRUG_FORM" jdbcType="VARCHAR" property="drugForm" />
+    <result column="TOXI_PROPERTY" jdbcType="VARCHAR" property="toxiProperty" />
+    <result column="DOSE_PER_UNIT" jdbcType="REAL" property="dosePerUnit" />
+    <result column="DOSE_UNITS" jdbcType="VARCHAR" property="doseUnits" />
+    <result column="INPUT_CODE" jdbcType="VARCHAR" property="inputCode" />
+    <result column="OTC" jdbcType="VARCHAR" property="otc" />
+    <result column="LIMIT_CLASS" jdbcType="VARCHAR" property="limitClass" />
+    <result column="STOP_FLAG" jdbcType="INTEGER" property="stopFlag" />
+    <result column="ENTERED_DATETIME" jdbcType="TIMESTAMP" property="enteredDatetime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    DRUG_CODE, DRUG_SPEC, DRUG_INDICATOR, DRUG_NAME, UNITS, DRUG_FORM, TOXI_PROPERTY, 
+    DOSE_PER_UNIT, DOSE_UNITS, INPUT_CODE, OTC, LIMIT_CLASS, STOP_FLAG, ENTERED_DATETIME
+  </sql>
+  <select id="selectByExample" parameterType="com.joe.input.model.ItDrugDictExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from it_drug_dict
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from it_drug_dict
+    where DRUG_CODE = #{drugCode,jdbcType=VARCHAR}
+      and DRUG_SPEC = #{drugSpec,jdbcType=VARCHAR}
+      and DRUG_INDICATOR = #{drugIndicator,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from it_drug_dict
+    where DRUG_CODE = #{drugCode,jdbcType=VARCHAR}
+      and DRUG_SPEC = #{drugSpec,jdbcType=VARCHAR}
+      and DRUG_INDICATOR = #{drugIndicator,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.joe.input.model.ItDrugDictExample">
+    delete from it_drug_dict
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.joe.input.model.ItDrugDict">
+    insert into it_drug_dict (DRUG_CODE, DRUG_SPEC, DRUG_INDICATOR, 
+      DRUG_NAME, UNITS, DRUG_FORM, 
+      TOXI_PROPERTY, DOSE_PER_UNIT, DOSE_UNITS, 
+      INPUT_CODE, OTC, LIMIT_CLASS, 
+      STOP_FLAG, ENTERED_DATETIME)
+    values (#{drugCode,jdbcType=VARCHAR}, #{drugSpec,jdbcType=VARCHAR}, #{drugIndicator,jdbcType=INTEGER}, 
+      #{drugName,jdbcType=VARCHAR}, #{units,jdbcType=VARCHAR}, #{drugForm,jdbcType=VARCHAR}, 
+      #{toxiProperty,jdbcType=VARCHAR}, #{dosePerUnit,jdbcType=REAL}, #{doseUnits,jdbcType=VARCHAR}, 
+      #{inputCode,jdbcType=VARCHAR}, #{otc,jdbcType=VARCHAR}, #{limitClass,jdbcType=VARCHAR}, 
+      #{stopFlag,jdbcType=INTEGER}, #{enteredDatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.joe.input.model.ItDrugDict">
+    insert into it_drug_dict
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="drugCode != null">
+        DRUG_CODE,
+      </if>
+      <if test="drugSpec != null">
+        DRUG_SPEC,
+      </if>
+      <if test="drugIndicator != null">
+        DRUG_INDICATOR,
+      </if>
+      <if test="drugName != null">
+        DRUG_NAME,
+      </if>
+      <if test="units != null">
+        UNITS,
+      </if>
+      <if test="drugForm != null">
+        DRUG_FORM,
+      </if>
+      <if test="toxiProperty != null">
+        TOXI_PROPERTY,
+      </if>
+      <if test="dosePerUnit != null">
+        DOSE_PER_UNIT,
+      </if>
+      <if test="doseUnits != null">
+        DOSE_UNITS,
+      </if>
+      <if test="inputCode != null">
+        INPUT_CODE,
+      </if>
+      <if test="otc != null">
+        OTC,
+      </if>
+      <if test="limitClass != null">
+        LIMIT_CLASS,
+      </if>
+      <if test="stopFlag != null">
+        STOP_FLAG,
+      </if>
+      <if test="enteredDatetime != null">
+        ENTERED_DATETIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="drugCode != null">
+        #{drugCode,jdbcType=VARCHAR},
+      </if>
+      <if test="drugSpec != null">
+        #{drugSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="drugIndicator != null">
+        #{drugIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="drugName != null">
+        #{drugName,jdbcType=VARCHAR},
+      </if>
+      <if test="units != null">
+        #{units,jdbcType=VARCHAR},
+      </if>
+      <if test="drugForm != null">
+        #{drugForm,jdbcType=VARCHAR},
+      </if>
+      <if test="toxiProperty != null">
+        #{toxiProperty,jdbcType=VARCHAR},
+      </if>
+      <if test="dosePerUnit != null">
+        #{dosePerUnit,jdbcType=REAL},
+      </if>
+      <if test="doseUnits != null">
+        #{doseUnits,jdbcType=VARCHAR},
+      </if>
+      <if test="inputCode != null">
+        #{inputCode,jdbcType=VARCHAR},
+      </if>
+      <if test="otc != null">
+        #{otc,jdbcType=VARCHAR},
+      </if>
+      <if test="limitClass != null">
+        #{limitClass,jdbcType=VARCHAR},
+      </if>
+      <if test="stopFlag != null">
+        #{stopFlag,jdbcType=INTEGER},
+      </if>
+      <if test="enteredDatetime != null">
+        #{enteredDatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.joe.input.model.ItDrugDictExample" resultType="java.lang.Long">
+    select count(*) from it_drug_dict
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update it_drug_dict
+    <set>
+      <if test="record.drugCode != null">
+        DRUG_CODE = #{record.drugCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.drugSpec != null">
+        DRUG_SPEC = #{record.drugSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="record.drugIndicator != null">
+        DRUG_INDICATOR = #{record.drugIndicator,jdbcType=INTEGER},
+      </if>
+      <if test="record.drugName != null">
+        DRUG_NAME = #{record.drugName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.units != null">
+        UNITS = #{record.units,jdbcType=VARCHAR},
+      </if>
+      <if test="record.drugForm != null">
+        DRUG_FORM = #{record.drugForm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.toxiProperty != null">
+        TOXI_PROPERTY = #{record.toxiProperty,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dosePerUnit != null">
+        DOSE_PER_UNIT = #{record.dosePerUnit,jdbcType=REAL},
+      </if>
+      <if test="record.doseUnits != null">
+        DOSE_UNITS = #{record.doseUnits,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inputCode != null">
+        INPUT_CODE = #{record.inputCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.otc != null">
+        OTC = #{record.otc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.limitClass != null">
+        LIMIT_CLASS = #{record.limitClass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stopFlag != null">
+        STOP_FLAG = #{record.stopFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.enteredDatetime != null">
+        ENTERED_DATETIME = #{record.enteredDatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update it_drug_dict
+    set DRUG_CODE = #{record.drugCode,jdbcType=VARCHAR},
+      DRUG_SPEC = #{record.drugSpec,jdbcType=VARCHAR},
+      DRUG_INDICATOR = #{record.drugIndicator,jdbcType=INTEGER},
+      DRUG_NAME = #{record.drugName,jdbcType=VARCHAR},
+      UNITS = #{record.units,jdbcType=VARCHAR},
+      DRUG_FORM = #{record.drugForm,jdbcType=VARCHAR},
+      TOXI_PROPERTY = #{record.toxiProperty,jdbcType=VARCHAR},
+      DOSE_PER_UNIT = #{record.dosePerUnit,jdbcType=REAL},
+      DOSE_UNITS = #{record.doseUnits,jdbcType=VARCHAR},
+      INPUT_CODE = #{record.inputCode,jdbcType=VARCHAR},
+      OTC = #{record.otc,jdbcType=VARCHAR},
+      LIMIT_CLASS = #{record.limitClass,jdbcType=VARCHAR},
+      STOP_FLAG = #{record.stopFlag,jdbcType=INTEGER},
+      ENTERED_DATETIME = #{record.enteredDatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.joe.input.model.ItDrugDict">
+    update it_drug_dict
+    <set>
+      <if test="drugName != null">
+        DRUG_NAME = #{drugName,jdbcType=VARCHAR},
+      </if>
+      <if test="units != null">
+        UNITS = #{units,jdbcType=VARCHAR},
+      </if>
+      <if test="drugForm != null">
+        DRUG_FORM = #{drugForm,jdbcType=VARCHAR},
+      </if>
+      <if test="toxiProperty != null">
+        TOXI_PROPERTY = #{toxiProperty,jdbcType=VARCHAR},
+      </if>
+      <if test="dosePerUnit != null">
+        DOSE_PER_UNIT = #{dosePerUnit,jdbcType=REAL},
+      </if>
+      <if test="doseUnits != null">
+        DOSE_UNITS = #{doseUnits,jdbcType=VARCHAR},
+      </if>
+      <if test="inputCode != null">
+        INPUT_CODE = #{inputCode,jdbcType=VARCHAR},
+      </if>
+      <if test="otc != null">
+        OTC = #{otc,jdbcType=VARCHAR},
+      </if>
+      <if test="limitClass != null">
+        LIMIT_CLASS = #{limitClass,jdbcType=VARCHAR},
+      </if>
+      <if test="stopFlag != null">
+        STOP_FLAG = #{stopFlag,jdbcType=INTEGER},
+      </if>
+      <if test="enteredDatetime != null">
+        ENTERED_DATETIME = #{enteredDatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where DRUG_CODE = #{drugCode,jdbcType=VARCHAR}
+      and DRUG_SPEC = #{drugSpec,jdbcType=VARCHAR}
+      and DRUG_INDICATOR = #{drugIndicator,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.joe.input.model.ItDrugDict">
+    update it_drug_dict
+    set DRUG_NAME = #{drugName,jdbcType=VARCHAR},
+      UNITS = #{units,jdbcType=VARCHAR},
+      DRUG_FORM = #{drugForm,jdbcType=VARCHAR},
+      TOXI_PROPERTY = #{toxiProperty,jdbcType=VARCHAR},
+      DOSE_PER_UNIT = #{dosePerUnit,jdbcType=REAL},
+      DOSE_UNITS = #{doseUnits,jdbcType=VARCHAR},
+      INPUT_CODE = #{inputCode,jdbcType=VARCHAR},
+      OTC = #{otc,jdbcType=VARCHAR},
+      LIMIT_CLASS = #{limitClass,jdbcType=VARCHAR},
+      STOP_FLAG = #{stopFlag,jdbcType=INTEGER},
+      ENTERED_DATETIME = #{enteredDatetime,jdbcType=TIMESTAMP}
+    where DRUG_CODE = #{drugCode,jdbcType=VARCHAR}
+      and DRUG_SPEC = #{drugSpec,jdbcType=VARCHAR}
+      and DRUG_INDICATOR = #{drugIndicator,jdbcType=INTEGER}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.joe.input.model.ItDrugDictExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from it_drug_dict
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>
