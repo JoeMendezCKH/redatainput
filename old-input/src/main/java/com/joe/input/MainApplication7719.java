@@ -1,7 +1,7 @@
 package com.joe.input;
 
-import com.joe.input.schedule.Timing;
-import com.joe.input.service.DataService;
+import com.joe.input.schedule.ScheduleService;
+import com.joe.input.service.DataInputJobsService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,10 +22,10 @@ public class MainApplication7719 implements CommandLineRunner {
 
 
     @Resource
-    DataService dataService;
+    DataInputJobsService service;
 
     @Resource
-    Timing timing;
+    ScheduleService scheduleService;
 
     /**
      * 调用定时任务, 启动导入
@@ -33,10 +33,11 @@ public class MainApplication7719 implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // do schedule
-        timing.testOracle();
-        timing.testMysql();
-        TimeUnit.SECONDS.sleep(3);
-        dataService.diagnosisDict();
-        System.out.println("aaaaaaaaaaaaaa");
+        scheduleService.testOracle();
+        scheduleService.testMysql();
+//        service.diagnosisDict();
+//        service.clinicItemDict();
+        service.clinicMaster();
+        service.patMasterIndex();
     }
 }

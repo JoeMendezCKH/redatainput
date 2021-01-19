@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class ServiceAspect {
     private static final Logger log = LoggerFactory.getLogger(ServiceAspect.class);
 
-    @Pointcut("execution(* com.joe.input.service.DataService.*(..))")
+    @Pointcut("execution(* com.joe.input.service.DataInputJobsService.*(..))")
     private void eachTimePointcut() {
     }
 

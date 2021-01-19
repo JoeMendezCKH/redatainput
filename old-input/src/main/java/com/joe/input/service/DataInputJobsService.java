@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
  * @since 2021/1/19
  */
 @Service
-public class DataService {
-    private static final Logger log = LoggerFactory.getLogger(DataService.class);
+public class DataInputJobsService {
+    private static final Logger log = LoggerFactory.getLogger(DataInputJobsService.class);
     private static final int PAGESHOW = 1000;
     private static final int SIZE = Integer.MAX_VALUE;
 
@@ -41,11 +41,10 @@ public class DataService {
             for (int i = 0; i < SIZE; i++) {
                 int begin = i * PAGESHOW;
                 List<ItVLabItemDict> oracleList = oracleDao.getAllVLabItemDict(begin, PAGESHOW);
-                if (oracleList.size() == 0) {
-                    break;
-                }
-                //当前页插入 mysql
-                oracleList.stream().parallel()
+                if (oracleList.size() == 0) break;
+
+                // 当前页插入 mysql
+                oracleList
                         .forEach(vLabItemDict -> {
                             try {
                                 mysqlDao.insertVLabItemDict(vLabItemDict);
@@ -56,7 +55,6 @@ public class DataService {
             }
         } catch (Exception e) {
             message.append(e.getMessage()).append("\n");
-            return;
         } finally {
             log.error("===> VLabItemDict end && with error message:  " + message);
         }
@@ -75,25 +73,25 @@ public class DataService {
             } else {
                 maxDate = "1972-10-10 10:10:10";
             }
-            log.info("ClinicMaster mysql中最大时间为：" + maxDate);
+            log.info("ClinicMaster mysql 中最大时间为：" + maxDate);
             int size = (oracleDao.getCountClinicMaster() / PAGESHOW) + 1;
             //分页导入导出
             for (int i = 0; i < size; i++) {
                 int begin = i * PAGESHOW;
-                int end = (i + 1) * PAGESHOW;
                 // 获取指定范围内 大于 datetime 的数据
                 List<ItClinicMaster> oracleList = oracleDao.getAllClinicMaster(begin, PAGESHOW, maxDate);
-                if (oracleList.size() == 0) {
-                    continue;
-                }
-                oracleList.stream().parallel()
-                        .forEach(clinicMaster -> {
-                            try {
-                                mysqlDao.insertItClinicMaster(clinicMaster);
-                            } catch (Exception e) {
-                                message.append(e.getMessage()).append("\n");
-                            }
-                        });
+                if (oracleList.size() == 0) continue;
+
+                // 884312 条数据
+                // 数据量过大,采用估算, 18min导入了12929 条, 估计需要1224min 也就是20h
+                // 换为并行流后, 约 3min导入10694,  估计需要 246 min 也就是 4h
+                oracleList.parallelStream().forEach(clinicMaster -> {
+                    try {
+                        mysqlDao.insertItClinicMaster(clinicMaster);
+                    } catch (Exception e) {
+                        message.append(e.getMessage()).append("\n");
+                    }
+                });
             }
         } catch (Exception e) {
             message.append(e.getMessage()).append("\n");
@@ -112,20 +110,29 @@ public class DataService {
             //分页导入导出
             for (int i = 0; i < SIZE; i++) {
                 int begin = i * PAGESHOW;
-                int end = (i + 1) * PAGESHOW;
                 List<ItClinicItemDict> oracleList = oracleDao.getAllClinicItemDict(begin, PAGESHOW);
                 //当前页为空跳出循环
-                if (oracleList.size() == 0) {
-                    break;
-                }
-                oracleList.stream().parallel()
-                        .forEach(clinicItemDict -> {
+                if (oracleList.size() == 0) break;
+
+                // 9240 条数据
+                // 12.08min
+//                oracleList.forEach(clinicItemDict -> {
+//                    try {
+//                        mysqlDao.insertClinicItemDict(clinicItemDict);
+//                    } catch (Exception e) {
+//                        message.append(e.getMessage()).append("\n");
+//                    }
+//                });
+                // 3.27 min
+                oracleList.parallelStream().forEach(
+                        clinicItemDict -> {
                             try {
                                 mysqlDao.insertClinicItemDict(clinicItemDict);
                             } catch (Exception e) {
                                 message.append(e.getMessage()).append("\n");
                             }
-                        });
+                        }
+                );
             }
         } catch (Exception e) {
             message.append(e.getMessage()).append("\n");
@@ -145,9 +152,8 @@ public class DataService {
                 int begin = i * PAGESHOW;
                 //分页取出oracle中数据
                 List<ItDeptDict> oracleList = oracleDao.getAllDeptDict(begin, PAGESHOW);
-                if (oracleList.size() == 0) {
-                    break;
-                }
+                if (oracleList.size() == 0) break;
+
 
                 oracleList.parallelStream()
                         .forEach(deptDict -> {
@@ -187,24 +193,30 @@ public class DataService {
             //分页导入导出
             for (int i = 0; i < size; i++) {
                 int begin = i * PAGESHOW;
-                int end = (i + 1) * PAGESHOW;
                 List<ItDiagnosisDict> oracleList = oracleDao.getAllDiagnosisDict(begin, PAGESHOW, maxTime);
 
-                if (oracleList.size() == 0) {
-                    continue;
-                }
+                if (oracleList.size() == 0) continue;
+
                 // 一共 33229 条数据
                 //38.66 min
 //                oracleList.forEach(diagnosisDict -> mysqlDao.insertDiagnosisDict(diagnosisDict));
                 // 9.72 min  优化 74%
 //                oracleList.parallelStream().forEach(diagnosisDict -> mysqlDao.insertDiagnosisDict(diagnosisDict));
-                try {
-                    oracleList.parallelStream().forEach(diagnosisDict -> mysqlDao.insertDiagnosisDict(diagnosisDict));
-                } catch (Exception e) {
-                    log.error("从 第{}条 开始的 {} 条数据中存在错误, 跳过", begin, PAGESHOW);
-                    message.append(e.getMessage()).append("\n");
-                }
-                System.out.println("第" + (i + 1) + "页, 正在导入");
+                // 12.68 min
+//                try {
+//                    oracleList.parallelStream().forEach(diagnosisDict -> mysqlDao.insertDiagnosisDict(diagnosisDict));
+//                } catch (Exception e) {
+//                    log.error("从 第{}页 第{}条 开始的 {} 条数据中存在错误, 跳过", i + 1, begin, PAGESHOW);
+//                    message.append(e.getMessage()).append("\n");
+//                }
+                // 12.15 min  优化 69% 且有异常处理
+                oracleList.parallelStream().forEach(diagnosisDict -> {
+                    try {
+                        mysqlDao.insertDiagnosisDict(diagnosisDict);
+                    } catch (Exception e) {
+                        message.append(e.getMessage()).append("\n");
+                    }
+                });
             }
         } catch (Exception e) {
             message.append(e.getMessage()).append("\n");
@@ -234,36 +246,31 @@ public class DataService {
             //分页导入导出
             for (int i = 0; i < size; i++) {
                 int begin = i * PAGESHOW;
-                int end = (i + 1) * PAGESHOW;
                 //获取当前页数据
                 List<ItStaffDict> oracleList = oracleDao.getAllStaffDict(begin, PAGESHOW, maxTime);
-                if (oracleList.size() == 0) {
-                    continue;
-                }
+                if (oracleList.size() == 0) continue;
+
                 /* 判断 mysql 中是否存在这些 数据, 如果存在则删除 */
                 List<String> idList = oracleList.stream().map(ItStaffDict::getId).collect(Collectors.toList());
-                idList.stream().parallel().forEach(
-                        staffId -> {
-                            try {
-                                int count = mysqlDao.isExistedStaff(staffId);
-                                if (count != 0) {
-                                    mysqlDao.delStaffById(staffId);
-                                }
-                            } catch (Exception e) {
-                                message.append(e.getMessage()).append("\n");
-                            }
+                idList.parallelStream().forEach(staffId -> {
+                    try {
+                        int count = mysqlDao.isExistedStaff(staffId);
+                        if (count != 0) {
+                            mysqlDao.delStaffById(staffId);
                         }
-                );
+                    } catch (Exception e) {
+                        message.append(e.getMessage()).append("\n");
+                    }
+                });
 
                 // 当前页导入mysql
-                oracleList.stream().parallel().forEach(
-                        staffDict -> {
-                            try {
-                                mysqlDao.insetStaffDict(staffDict);
-                            } catch (Exception e) {
-                                message.append(e.getMessage()).append("\n");
-                            }
-                        });
+                oracleList.parallelStream().forEach(staffDict -> {
+                    try {
+                        mysqlDao.insetStaffDict(staffDict);
+                    } catch (Exception e) {
+                        message.append(e.getMessage()).append("\n");
+                    }
+                });
             }
         } catch (Exception e) {
             message.append(e.getMessage()).append("\n");
@@ -296,9 +303,8 @@ public class DataService {
                 //获取当前页数据
                 List<ItDrugDict> oracleList = oracleDao.getAllDrugDict(begin, PAGESHOW, maxTime);
                 //当前页为空时，跳出循环
-                if (oracleList.size() == 0) {
-                    continue;
-                }
+                if (oracleList.size() == 0) continue;
+
 
                 /* 判断是否存在 */
                 List<String> drugDictList = oracleList.parallelStream().map(drug -> {
@@ -307,21 +313,19 @@ public class DataService {
                     return drugCode + "-" + drugSpec;
                 }).collect(Collectors.toList());
 
-                drugDictList.parallelStream().forEach(
-                        drug -> {
-                            String[] split = drug.split("-");
-                            try {
-                                int count = mysqlDao.isExistedDict(split[0], split[1]);
-                                if (count != 0) {
-                                    mysqlDao.delDrugByCodeAndSpec(split[0], split[1]);
-                                }
-                            } catch (Exception e) {
-//                                message.append(e.getMessage()).append("\n");
-                                log.error("split[]-> {}; split[0]-> {}, split[1]-> {}", split, split[0], split[1]);
-                                log.error("drugDictList.parallelStream().forEach, {}", e.getMessage());
-                            }
+                drugDictList.parallelStream().forEach(drug -> {
+                    String[] split = drug.split("-");
+                    try {
+                        int count = mysqlDao.isExistedDict(split[0], split[1]);
+                        if (count != 0) {
+                            mysqlDao.delDrugByCodeAndSpec(split[0], split[1]);
                         }
-                );
+                    } catch (Exception e) {
+//                                message.append(e.getMessage()).append("\n");
+                        log.error("split[]-> {}; split[0]-> {}, split[1]-> {}", split, split[0], split[1]);
+                        log.error("drugDictList.parallelStream().forEach, {}", e.getMessage());
+                    }
+                });
 
 
                 //当前页导入mysql
@@ -353,22 +357,19 @@ public class DataService {
             //分页导入导出
             for (int i = 0; i < SIZE; i++) {
                 int begin = i * PAGESHOW;
-                int end = (i + 1) * PAGESHOW;
                 //获取当前页数据
                 List<ItDrugPriceList> oracleList = oracleDao.getAllDrugPriceList(begin, PAGESHOW);
                 //当前页为空时，跳出循环
-                if (oracleList.size() == 0) {
-                    break;
-                }
+                if (oracleList.size() == 0) break;
+
                 //当前页导入mysql
-                oracleList.stream().parallel()
-                        .forEach(drugPriceList -> {
-                            try {
-                                mysqlDao.insertDrugPriceList(drugPriceList);
-                            } catch (Exception e) {
-                                message.append(e.getMessage()).append("\n");
-                            }
-                        });
+                oracleList.parallelStream().forEach(drugPriceList -> {
+                    try {
+                        mysqlDao.insertDrugPriceList(drugPriceList);
+                    } catch (Exception e) {
+                        message.append(e.getMessage()).append("\n");
+                    }
+                });
             }
         } catch (Exception e) {
             message.append(e.getMessage()).append("\n");
@@ -400,9 +401,8 @@ public class DataService {
                 //获取当前页数据
                 List<ItPatMasterIndex> oracleList = oracleDao.getAllPatMasterIndex(begin, PAGESHOW, matTime);
                 //当前页为空时，跳出循环
-                if (oracleList.size() == 0) {
-                    continue;
-                }
+                if (oracleList.size() == 0) continue;
+
 
                 /* 判断是否存在 */
                 List<String> patientIds = oracleList.parallelStream().map(ItPatMasterIndex::getPatientId).collect(Collectors.toList());
@@ -444,20 +444,17 @@ public class DataService {
             //分页导出导入
             for (int i = 0; i < SIZE; i++) {
                 int begin = i * PAGESHOW;
-                int end = (i + 1) * PAGESHOW;
                 List<ItExamItemDict> oracleList = oracleDao.getAllExamItemDict(begin, PAGESHOW);
 
-                if (oracleList.size() == 0) {
-                    break;
-                }
-                oracleList.stream().parallel()
-                        .forEach(examItemDict -> {
-                            try {
-                                mysqlDao.insertExamItemDict(examItemDict);
-                            } catch (Exception e) {
-                                message.append(e.getMessage()).append("\n");
-                            }
-                        });
+                if (oracleList.size() == 0) break;
+
+                oracleList.parallelStream().forEach(examItemDict -> {
+                    try {
+                        mysqlDao.insertExamItemDict(examItemDict);
+                    } catch (Exception e) {
+                        message.append(e.getMessage()).append("\n");
+                    }
+                });
             }
 
         } catch (Exception e) {

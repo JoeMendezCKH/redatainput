@@ -69,6 +69,8 @@ spring:
 
       # 开启监控
       stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
         login-username: @servlet.login.username@
         login-password: @servlet.login.password@
 mybatis:

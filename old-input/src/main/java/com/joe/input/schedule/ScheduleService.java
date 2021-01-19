@@ -1,9 +1,10 @@
 package com.joe.input.schedule;
 
 
-import com.joe.input.service.DataService;
+import com.joe.input.service.DataInputJobsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLongArray;
@@ -22,13 +24,13 @@ import java.util.concurrent.atomic.AtomicLongArray;
  *
  * @author Joe
  * @version 1.1
- * @create 2020/4/14 19:11
+ * @since 2020/4/14 19:11
  */
 @Component
-public class Timing {
+public class ScheduleService {
 
     @Resource
-    DataService dataService;
+    DataInputJobsService dataInputJobsService;
 
     @Resource
     StartTime startTime;
@@ -39,7 +41,7 @@ public class Timing {
     @Resource
     DataSource mysqlDataSource;
 
-    private static final Logger logger = LoggerFactory.getLogger(Timing.class);
+    private static final Logger logger = LoggerFactory.getLogger(ScheduleService.class);
     /**
      * 总任务数 10
      */
@@ -116,7 +118,7 @@ public class Timing {
                 testMysql();
                 testOracle();
                 logger.info("=============> start working <=============");
-                dataService.patMasterIndex();
+                dataInputJobsService.patMasterIndex();
             } catch (Exception e) {
                 logger.error(e.getMessage());
             } finally {
@@ -129,7 +131,7 @@ public class Timing {
                 longArray.set(0, System.currentTimeMillis());
                 // 让其他线程设置结束时间
                 try {
-                    Thread.sleep(1000);
+                    TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     logger.error(e.getMessage());
                 }
@@ -145,18 +147,16 @@ public class Timing {
         long initDelay = getTimeMillis(startTime.startTimeClinicMaster) - System.currentTimeMillis();
         initDelay = initDelay > 0 ? initDelay : oneDay + initDelay;
         executor.scheduleAtFixedRate(() -> {
+
+            dataInputJobsService.clinicMaster();
+
             try {
-                dataService.clinicMaster();
-            } catch (Exception e) {
+                cyclicBarrier.await();
+            } catch (InterruptedException | BrokenBarrierException e) {
                 logger.error(e.getMessage());
-            } finally {
-                try {
-                    cyclicBarrier.await();
-                } catch (InterruptedException | BrokenBarrierException e) {
-                    logger.error(e.getMessage());
-                }
-                longArray.set(1, System.currentTimeMillis());
             }
+            longArray.set(1, System.currentTimeMillis());
+
         }, initDelay, oneDay, TimeUnit.MILLISECONDS);
     }
 
@@ -165,7 +165,7 @@ public class Timing {
         initDelay = initDelay > 0 ? initDelay : oneDay + initDelay;
         executor.scheduleAtFixedRate(() -> {
             try {
-                dataService.deptDict();
+                dataInputJobsService.deptDict();
             } catch (Exception e) {
                 logger.error(e.getMessage());
             } finally {
@@ -184,7 +184,7 @@ public class Timing {
         initDelay = initDelay > 0 ? initDelay : oneDay + initDelay;
         executor.scheduleAtFixedRate(() -> {
             try {
-                dataService.diagnosisDict();
+                dataInputJobsService.diagnosisDict();
             } catch (Exception e) {
                 logger.error(e.getMessage());
             } finally {
@@ -203,7 +203,7 @@ public class Timing {
         initDelay = initDelay > 0 ? initDelay : oneDay + initDelay;
         executor.scheduleAtFixedRate(() -> {
             try {
-                dataService.drugDict();
+                dataInputJobsService.drugDict();
             } catch (Exception e) {
                 logger.error(e.getMessage());
             } finally {
@@ -223,7 +223,7 @@ public class Timing {
         initDelay = initDelay > 0 ? initDelay : oneDay + initDelay;
         executor.scheduleAtFixedRate(() -> {
             try {
-                dataService.drugPriceList();
+                dataInputJobsService.drugPriceList();
             } catch (Exception e) {
                 logger.error(e.getMessage());
             } finally {
@@ -242,7 +242,7 @@ public class Timing {
         initDelay = initDelay > 0 ? initDelay : oneDay + initDelay;
         executor.scheduleAtFixedRate(() -> {
             try {
-                dataService.examItemDict();
+                dataInputJobsService.examItemDict();
             } catch (Exception e) {
                 logger.error(e.getMessage());
             } finally {
@@ -261,7 +261,7 @@ public class Timing {
         initDelay = initDelay > 0 ? initDelay : oneDay + initDelay;
         executor.scheduleAtFixedRate(() -> {
             try {
-                dataService.clinicItemDict();
+                dataInputJobsService.clinicItemDict();
             } catch (Exception e) {
                 logger.error(e.getMessage());
             } finally {
@@ -280,7 +280,7 @@ public class Timing {
         initDelay = initDelay > 0 ? initDelay : oneDay + initDelay;
         executor.scheduleAtFixedRate(() -> {
             try {
-                dataService.staffDict();
+                dataInputJobsService.staffDict();
             } catch (Exception e) {
                 logger.error(e.getMessage());
             } finally {
@@ -299,7 +299,7 @@ public class Timing {
         initDelay = initDelay > 0 ? initDelay : oneDay + initDelay;
         executor.scheduleAtFixedRate(() -> {
             try {
-                dataService.vLabItemDict();
+                dataInputJobsService.vLabItemDict();
             } catch (Exception e) {
                 logger.error(e.getMessage());
             } finally {
@@ -321,6 +321,7 @@ public class Timing {
         for (int i = 0; i < NUM_OF_TASK; i++) {
             // 说明还有其他任务没执行
             if (longArray.get(i) == 0) {
+                logger.error("有任务没有执行完就开始计算结束了, 任务id = {}", i);
                 return;
             }
             if (longArray.get(i) > max) {

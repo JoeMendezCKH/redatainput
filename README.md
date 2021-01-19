@@ -52,7 +52,7 @@
     - [服务器 ip 错误](https://www.cnblogs.com/fx-blog/p/7325299.html) 
 
 - 基本上一直都报错误3, 每半个小时夹一条错误1, 每天偶尔会有错误4
-- 目前看来都是 oracle 数据库的锅, 淦,sb (10-05)
+- 目前看来都是 oracle 数据库的锅, 淦,sb 
 
 - 错误2 涉及的表
     - PatMasterIndex
@@ -66,7 +66,7 @@
     - VLabItemDict
     - DeptDict
 
-### 2. 耗时分析
+### 2. 耗时分析记录
 
 - 根据日志记录的结果, 共有31天的结果
 - 28天中的结果为 78020 ms左右, 误差不超过10ms, 1分半
@@ -76,11 +76,9 @@
 
 - 使用 Stream 流进行合理的优化, 提高运行效率
 - 使用设计模式进行重构, 让代码好看一点
+- 现存的方案, 不方便查看错误, 想通过集成开源框架xxl-job进行任务调度
 
-## TO DO LIST
+## DO LIST
 
-- [x] Mysql 数据库的驱动版本  
-- [x] Mysql 数据库连接配置与验证  
-- [ ] Oracle 数据库的驱动版本  
-- [ ] Oracle 数据库连接配置与验证  
-- [ ] 定时任务的取消与关闭  
+- [x] 使用 Stream 流优化导入过程  
+- [x] 使用 ScheduledExecutorService 做任务调度
