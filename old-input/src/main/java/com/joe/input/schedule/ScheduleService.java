@@ -77,6 +77,7 @@ public class ScheduleService {
         task8();
         task9();
         task10();
+        logger.info("配置完成");
     }
 
     /**
@@ -111,7 +112,6 @@ public class ScheduleService {
     private void task1() {
         long initDelay = getTimeMillis(startTime.startTimePatMasterIndex) - System.currentTimeMillis();
         initDelay = initDelay > 0 ? initDelay : oneDay + initDelay;
-        logger.info("配置完成");
         executor.scheduleAtFixedRate(() -> {
             try {
                 start = System.currentTimeMillis();
