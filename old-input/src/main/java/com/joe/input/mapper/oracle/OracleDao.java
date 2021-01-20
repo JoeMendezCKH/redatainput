@@ -151,7 +151,7 @@ public interface OracleDao {
             @Result(property = "units", column = "UNITS", javaType = String.class, jdbcType = JdbcType.VARCHAR),
             @Result(property = "drugForm", column = "DRUG_FORM", javaType = String.class, jdbcType = JdbcType.VARCHAR),
             @Result(property = "toxiProperty", column = "TOXI_PROPERTY", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-            @Result(property = "dosePerUnit", column = "DOSE_PER_UNIT", javaType = Double.class, jdbcType = JdbcType.FLOAT),
+            @Result(property = "dosePerUnit", column = "DOSE_PER_UNIT", javaType = Float.class, jdbcType = JdbcType.FLOAT),
             @Result(property = "doseUnits", column = "DOSE_UNITS", javaType = String.class, jdbcType = JdbcType.VARCHAR),
             @Result(property = "drugIndicator", column = "DRUG_INDICATOR", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
             @Result(property = "inputCode", column = "INPUT_CODE", javaType = String.class, jdbcType = JdbcType.VARCHAR),
