@@ -1,5 +1,6 @@
 package com.joe.input.aspect;
 
+import com.xxl.job.core.log.XxlJobLogger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -34,14 +35,17 @@ public class ServiceAspect {
             long end = System.currentTimeMillis();
             String msg = (String) result;
             if (msg.length() == 0) {
+                XxlJobLogger.log("===> " + joinPoint.getSignature().getName() + " Use time : " + (end - start) + " ms!");
                 log.info("===> " + joinPoint.getSignature().getName() + " Use time : " + (end - start) + " ms!");
             } else {
                 log.error("===> " + joinPoint.getSignature().getName() + " Use time : " + (end - start) + " ms!\t with error message : \n\t " + msg);
+                XxlJobLogger.log("===> " + joinPoint.getSignature().getName() + " Use time : " + (end - start) + " ms!\t with error message : \n\t " + msg);
             }
             return result;
         } catch (Throwable e) {
             long end = System.currentTimeMillis();
             log.error("===> " + joinPoint.getSignature().getName() + " Use time : " + (end - start) + " m xs with exception : " + e.getMessage());
+            XxlJobLogger.log("===> " + joinPoint.getSignature().getName() + " Use time : " + (end - start) + " m xs with exception : " + e.getMessage());
             throw e;
         }
     }

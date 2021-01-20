@@ -34,6 +34,6 @@ public class MainApplication7719 implements CommandLineRunner {
         // do schedule
         scheduleService.testOracle();
         scheduleService.testMysql();
-        scheduleService.startTask();
+//        scheduleService.startTask();
     }
 }

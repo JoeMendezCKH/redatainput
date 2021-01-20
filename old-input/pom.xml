@@ -11,6 +11,13 @@
 
     <artifactId>old-input</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.xuxueli</groupId>
+            <artifactId>xxl-job-core</artifactId>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -29,9 +36,9 @@
                 </executions>
             </plugin>
         </plugins>
-        <!-- 加载 datasourceConfig.properties 配置文件-->
+        <!-- 加载 datasourceConfig.properties 配置文件, 路径是 该pom文件的相对路径-->
         <filters>
-            <filter>src/main/resources/datasourceConfig.properties</filter>
+            <filter>../datasourceConfig.properties</filter>
         </filters>
         <resources>
             <resource>

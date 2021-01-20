@@ -77,3 +77,13 @@ mybatis:
   type-aliases-package: com.joe.input.model
   mapper-locations:
     - classpath:com/**/mapper/**/*.xml
+
+xxl:
+  job:
+    admin:
+      addresses: http://localhost:4002/xxl-job-admin
+    executor:
+      appname: ${spring.application.name}
+      port: 9999
+      logpath: ./logs/data-input/jobhandler
+      logretentiondays: 30

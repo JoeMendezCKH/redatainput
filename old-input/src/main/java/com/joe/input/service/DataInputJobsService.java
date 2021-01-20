@@ -3,6 +3,7 @@ package com.joe.input.service;
 import com.joe.input.mapper.mysql.MysqlDao;
 import com.joe.input.mapper.oracle.OracleDao;
 import com.joe.input.model.*;
+import com.xxl.job.core.log.XxlJobLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -110,6 +111,7 @@ public class DataInputJobsService {
         try {
             //删除mysql中已有数据
             mysqlDao.deleteClinicItemDict();
+            XxlJobLogger.log("ClinicItemDict 删除完成");
             log.info("ClinicItemDict 删除完成");
             //分页导入导出
             for (int i = 0; i < SIZE; i++) {

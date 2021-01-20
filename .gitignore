@@ -3,6 +3,8 @@
 /logs/
 *.log/*
 *.log
-/old-input/src/main/resources/datasourceConfig.properties
+*/src/main/resources/datasourceConfig.properties
+datasourceConfig.properties
 .idea/
 *.iml
+/datasourceConfig.properties
