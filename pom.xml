@@ -71,18 +71,4 @@
 
     </dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-            <!-- TODO: oracle 驱动版本需要看数据库的版本 https://www.oracle.com/database/technologies/faq-jdbc.html#01_01 -->
-            <dependency>
-                <groupId>com.oracle</groupId>
-                <artifactId>ojdbc6</artifactId>
-                <version>11.2.0.3</version>
-                <scope>system</scope>
-                <systemPath>${pom.basedir}/lib/ojdbc6-11.2.0.3.jar</systemPath>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-
 </project>

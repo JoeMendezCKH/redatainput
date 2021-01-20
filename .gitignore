@@ -1,6 +1,6 @@
 */target/
 /target/
-/log/
+/logs/
 *.log/*
 *.log
 /old-input/src/main/resources/datasourceConfig.properties
