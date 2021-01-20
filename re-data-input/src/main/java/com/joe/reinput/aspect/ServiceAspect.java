@@ -12,9 +12,10 @@ import org.springframework.stereotype.Component;
 
 /**
  * 日志切面
+ * 为方法添加日志
  *
  * @author Joe
- * @since 2021/1/18 13:17
+ * @since 2021/1/18
  */
 @Aspect
 @Component
