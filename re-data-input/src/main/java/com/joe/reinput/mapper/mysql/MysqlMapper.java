@@ -12,7 +12,7 @@ import java.util.List;
  * @since 2020/3/10 13:40
  */
 @Component
-public interface MysqlDao {
+public interface MysqlMapper {
 
 
     @Insert("INSERT INTO it_clinic_master(VISIT_DATE, VISIT_NO,CLINIC_LABEL,VISIT_TIME_DESC,SERIAL_NO,PATIENT_ID,NAME,NAME_PHONETIC,SEX,AGE,IDENTITY,CHARGE_TYPE,INSURANCE_TYPE,INSURANCE_NO,UNIT_IN_CONTRACT,CLINIC_TYPE,FIRST_VISIT_INDICATOR,VISIT_DEPT,VISIT_SPECIAL_CLINIC,DOCTOR,MR_PROVIDE_INDICATOR,REGISTRATION_STATUS,REGISTERING_DATE,SYMPTOM,REGIST_FEE,CLINIC_FEE,OTHER_FEE,CLINIC_CHARGE,OPERATOR,RETURNED_DATE,RETURNED_OPERATOR,MODE_CODE,CARD_NAME,CARD_NO,ACCT_DATE_TIME,ACCT_NO,PAY_WAY,MR_PROVIDED_INDICATOR,INVOICE_NO,CLINIC_NO) VALUES(#{visitDate},#{visitNo},#{clinicLabel},#{visitTimeDesc},#{serialNo},#{patientId},#{name},#{namePhonetic},#{sex},#{age},#{identity},#{chargeType},#{insuranceType},#{insuranceNo},#{unitInContract},#{clinicType},#{firstVisitIndicator},#{visitDept},#{visitSpecialClinic},#{doctor},#{mrProvideIndicator},#{registrationStatus},#{registeringDate},#{symptom},#{registFee},#{clinicFee},#{otherFee},#{clinicCharge},#{operator},#{returnedDate},#{returnedOperator},#{modeCode},#{cardName},#{cardNo},#{acctDateTime},#{acctNo},#{payWay},#{mrProvidedIndicator},#{invoiceNo},#{clinicNo})")

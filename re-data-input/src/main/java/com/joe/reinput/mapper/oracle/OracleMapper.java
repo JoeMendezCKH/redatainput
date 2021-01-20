@@ -16,7 +16,7 @@ import java.util.List;
  * @since 2021/1/18 13:40
  */
 @Component
-public interface OracleDao {
+public interface OracleMapper {
 
     // VLabItemDict
     @Select("SELECT * FROM  it_v_lab_item_dict LIMIT #{page}, #{pageSize}")

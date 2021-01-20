@@ -1,14 +1,17 @@
 package com.joe.reinput.service;
 
 
-import com.joe.reinput.mapper.mysql.MysqlDao;
-import com.joe.reinput.mapper.oracle.OracleDao;
+import com.joe.reinput.mapper.mysql.MysqlMapper;
+import com.joe.reinput.mapper.oracle.OracleMapper;
 import com.joe.reinput.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,16 +25,16 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("UnusedReturnValue")
 @Service
-public class DataInputJobsService {
-    private static final Logger log = LoggerFactory.getLogger(DataInputJobsService.class);
+public class DataService {
+    private static final Logger log = LoggerFactory.getLogger(DataService.class);
     private static final int PAGESHOW = 1000;
     private static final int SIZE = Integer.MAX_VALUE;
 
     @Resource
-    OracleDao oracleDao;
+    OracleMapper oracleMapper;
 
     @Resource
-    MysqlDao mysqlDao;
+    MysqlMapper mysqlMapper;
 
 
     /**
@@ -42,17 +45,17 @@ public class DataInputJobsService {
         StringBuilder errorMsg = new StringBuilder();
         try {
             //删除 mysql 原有数据
-            mysqlDao.deleteVLabItemDict();
-            log.info("===> VLabItemDict old data delete success");
+            mysqlMapper.deleteVLabItemDict();
+            log.info("===> VLabItemDict 旧数据删除完成");
             for (int i = 0; i < SIZE; i++) {
                 int begin = i * PAGESHOW;
-                List<ItVLabItemDict> oracleList = oracleDao.getAllVLabItemDict(begin, PAGESHOW);
+                List<ItVLabItemDict> oracleList = oracleMapper.getAllVLabItemDict(begin, PAGESHOW);
                 if (oracleList.size() == 0) break;
                 // 当前页插入 mysql
                 oracleList
                         .forEach(vLabItemDict -> {
                             try {
-                                mysqlDao.insertVLabItemDict(vLabItemDict);
+                                mysqlMapper.insertVLabItemDict(vLabItemDict);
                             } catch (Exception e) {
                                 errorMsg.append(e.getMessage()).append("\n");
                             }
@@ -71,20 +74,20 @@ public class DataInputJobsService {
         StringBuilder errorMsg = new StringBuilder();
         try {
             //记录mysql数据库的记录数量
-            int index = mysqlDao.getNumRecordItClinicMaster();
+            int index = mysqlMapper.getNumRecordItClinicMaster();
             String maxDate;
             if (index != 0) {
-                maxDate = mysqlDao.getMaxDateItClinicMaster();
+                maxDate = mysqlMapper.getMaxDateItClinicMaster();
             } else {
                 maxDate = "1972-10-10 10:10:10";
             }
             log.info("ClinicMaster mysql 中最大时间为：" + maxDate);
-            int size = (oracleDao.getCountClinicMaster() / PAGESHOW) + 1;
+            int size = (oracleMapper.getCountClinicMaster() / PAGESHOW) + 1;
             //分页导入导出
             for (int i = 0; i < size; i++) {
                 int begin = i * PAGESHOW;
                 // 获取指定范围内 大于 datetime 的数据
-                List<ItClinicMaster> oracleList = oracleDao.getAllClinicMaster(begin, PAGESHOW, maxDate);
+                List<ItClinicMaster> oracleList = oracleMapper.getAllClinicMaster(begin, PAGESHOW, maxDate);
                 if (oracleList.size() == 0) continue;
 
                 // 884312 条数据
@@ -93,7 +96,7 @@ public class DataInputJobsService {
                 // 经实际测试后发现, 跑完需要 6h
                 oracleList.parallelStream().forEach(clinicMaster -> {
                     try {
-                        mysqlDao.insertItClinicMaster(clinicMaster);
+                        mysqlMapper.insertItClinicMaster(clinicMaster);
                     } catch (Exception e) {
                         errorMsg.append(e.getMessage()).append("\n");
                     }
@@ -110,13 +113,13 @@ public class DataInputJobsService {
         StringBuilder errorMsg = new StringBuilder();
         try {
             //删除mysql中已有数据
-            mysqlDao.deleteClinicItemDict();
-//            XxlJobLogger.log("ClinicItemDict 删除完成");
-            log.info("ClinicItemDict 删除完成");
+            mysqlMapper.deleteClinicItemDict();
+//            XxlJobLogger.log("ClinicItemDict 旧数据删除完成");
+            log.info("ClinicItemDict 旧数据删除完成");
             //分页导入导出
             for (int i = 0; i < SIZE; i++) {
                 int begin = i * PAGESHOW;
-                List<ItClinicItemDict> oracleList = oracleDao.getAllClinicItemDict(begin, PAGESHOW);
+                List<ItClinicItemDict> oracleList = oracleMapper.getAllClinicItemDict(begin, PAGESHOW);
                 //当前页为空跳出循环
                 if (oracleList.size() == 0) break;
 
@@ -133,14 +136,13 @@ public class DataInputJobsService {
                 oracleList.parallelStream().forEach(
                         clinicItemDict -> {
                             try {
-                                mysqlDao.insertClinicItemDict(clinicItemDict);
+                                mysqlMapper.insertClinicItemDict(clinicItemDict);
                             } catch (Exception e) {
                                 errorMsg.append(e.getMessage()).append("\n");
                             }
                         }
                 );
             }
-            int temp = 10 / 0;
             return errorMsg.toString();
         } catch (Exception e) {
             errorMsg.append(e.getMessage()).append("\n");
@@ -152,20 +154,20 @@ public class DataInputJobsService {
         StringBuilder errorMsg = new StringBuilder();
         try {
             //删除mysql中数据
-            mysqlDao.deleteDeptDict();
-            log.info("DeptDict 删除完成");
+            mysqlMapper.deleteDeptDict();
+            log.info("DeptDict 旧数据删除完成");
             //分页导入导出
             for (int i = 0; i < SIZE; i++) {
                 int begin = i * PAGESHOW;
                 //分页取出oracle中数据
-                List<ItDeptDict> oracleList = oracleDao.getAllDeptDict(begin, PAGESHOW);
+                List<ItDeptDict> oracleList = oracleMapper.getAllDeptDict(begin, PAGESHOW);
                 if (oracleList.size() == 0) break;
 
 
                 oracleList.parallelStream()
                         .forEach(deptDict -> {
                             try {
-                                mysqlDao.insertDeptDict(deptDict);
+                                mysqlMapper.insertDeptDict(deptDict);
                             } catch (Exception e) {
                                 errorMsg.append(e.getMessage()).append("\n");
                             }
@@ -185,21 +187,21 @@ public class DataInputJobsService {
         StringBuilder errorMsg = new StringBuilder();
         try {
             //记录MYSQL数据库的记录数量
-            int index = mysqlDao.getNumRecordDiagnosisDict();
+            int index = mysqlMapper.getNumRecordDiagnosisDict();
             //记录最大时间
             String maxTime;
             if (index != 0) {
-                maxTime = mysqlDao.getMaxDateDiagnosisDict();
+                maxTime = mysqlMapper.getMaxDateDiagnosisDict();
             } else {
                 maxTime = "1972-10-10 10:10:10";
             }
             log.info("DiagnosisDict mysql当前最大时间：" + maxTime);
-            int size = (oracleDao.getCountDiagnosisDict() / PAGESHOW) + 1;
+            int size = (oracleMapper.getCountDiagnosisDict() / PAGESHOW) + 1;
             System.out.println("size = " + size);
             //分页导入导出
             for (int i = 0; i < size; i++) {
                 int begin = i * PAGESHOW;
-                List<ItDiagnosisDict> oracleList = oracleDao.getAllDiagnosisDict(begin, PAGESHOW, maxTime);
+                List<ItDiagnosisDict> oracleList = oracleMapper.getAllDiagnosisDict(begin, PAGESHOW, maxTime);
 
                 if (oracleList.size() == 0) continue;
 
@@ -218,7 +220,7 @@ public class DataInputJobsService {
                 // 12.15 min  优化 69% 且有异常处理
                 oracleList.parallelStream().forEach(diagnosisDict -> {
                     try {
-                        mysqlDao.insertDiagnosisDict(diagnosisDict);
+                        mysqlMapper.insertDiagnosisDict(diagnosisDict);
                     } catch (Exception e) {
                         errorMsg.append(e.getMessage()).append("\n");
                     }
@@ -238,31 +240,31 @@ public class DataInputJobsService {
             // mysqlMapper.truncateStaffDict();
             // log.info("StaffDict delete success");
 
-            int index = mysqlDao.getNumStaffDict();
+            int index = mysqlMapper.getNumStaffDict();
             //记录最大时间
             String maxTime;
             if (index != 0) {
-                maxTime = mysqlDao.getMaxDateStaffDict();
+                maxTime = mysqlMapper.getMaxDateStaffDict();
             } else {
                 maxTime = "1950-10-10 10:10:10";
             }
             log.info("StaffDict mysql当前最大时间：" + maxTime);
 
-            int size = (oracleDao.getCountStaffDict(maxTime) / PAGESHOW) + 1;
+            int size = (oracleMapper.getCountStaffDict(maxTime) / PAGESHOW) + 1;
             //分页导入导出
             for (int i = 0; i < size; i++) {
                 int begin = i * PAGESHOW;
                 //获取当前页数据
-                List<ItStaffDict> oracleList = oracleDao.getAllStaffDict(begin, PAGESHOW, maxTime);
+                List<ItStaffDict> oracleList = oracleMapper.getAllStaffDict(begin, PAGESHOW, maxTime);
                 if (oracleList.size() == 0) continue;
 
                 /* 判断 mysql 中是否存在这些 数据, 如果存在则删除 */
                 List<String> idList = oracleList.stream().map(ItStaffDict::getId).collect(Collectors.toList());
                 idList.parallelStream().forEach(staffId -> {
                     try {
-                        int count = mysqlDao.isExistedStaff(staffId);
+                        int count = mysqlMapper.isExistedStaff(staffId);
                         if (count != 0) {
-                            mysqlDao.delStaffById(staffId);
+                            mysqlMapper.delStaffById(staffId);
                         }
                     } catch (Exception e) {
                         errorMsg.append(e.getMessage()).append("\n");
@@ -272,7 +274,7 @@ public class DataInputJobsService {
                 // 当前页导入mysql
                 oracleList.parallelStream().forEach(staffDict -> {
                     try {
-                        mysqlDao.insetStaffDict(staffDict);
+                        mysqlMapper.insetStaffDict(staffDict);
                     } catch (Exception e) {
                         errorMsg.append(e.getMessage()).append("\n");
                     }
@@ -291,23 +293,23 @@ public class DataInputJobsService {
             // 删除mysql已有数据
             // mysqlMapper.truncateDrugDict();
             // log.info("DrugDict delete success ");
-            int index = mysqlDao.getNumDrugDict();
+            int index = mysqlMapper.getNumDrugDict();
             // 记录最大时间
             String maxTime;
             if (index != 0) {
-                maxTime = mysqlDao.getMaxTimeDrugDict();
+                maxTime = mysqlMapper.getMaxTimeDrugDict();
             } else {
                 maxTime = "1950-10-10 10:10:10";
             }
             log.info("drugDict mysql当前最大时间：" + maxTime);
 
-            int size = (oracleDao.getCountDrugDict() / PAGESHOW) + 1;
+            int size = (oracleMapper.getCountDrugDict() / PAGESHOW) + 1;
             //分页导入导出
             for (int i = 0; i < size; i++) {
                 int begin = i * PAGESHOW;
                 int end = (i + 1) * PAGESHOW;
                 //获取当前页数据
-                List<ItDrugDict> oracleList = oracleDao.getAllDrugDict(begin, PAGESHOW, maxTime);
+                List<ItDrugDict> oracleList = oracleMapper.getAllDrugDict(begin, PAGESHOW, maxTime);
                 //当前页为空时，跳出循环
                 if (oracleList.size() == 0) continue;
 
@@ -322,9 +324,9 @@ public class DataInputJobsService {
                 drugDictList.parallelStream().forEach(drug -> {
                     String[] split = drug.split("-");
                     try {
-                        int count = mysqlDao.isExistedDict(split[0], split[1]);
+                        int count = mysqlMapper.isExistedDict(split[0], split[1]);
                         if (count != 0) {
-                            mysqlDao.delDrugByCodeAndSpec(split[0], split[1]);
+                            mysqlMapper.delDrugByCodeAndSpec(split[0], split[1]);
                         }
                     } catch (Exception e) {
                         errorMsg.append(e.getMessage()).append("\n");
@@ -337,7 +339,7 @@ public class DataInputJobsService {
                 //当前页导入mysql
                 oracleList.parallelStream().forEach(drugDict -> {
                     try {
-                        mysqlDao.insertDrugDict(drugDict);
+                        mysqlMapper.insertDrugDict(drugDict);
                     } catch (Exception e) {
                         errorMsg.append(e.getMessage()).append("\n");
 //                        log.error("oracleList.stream().parallel" + e.getMessage());
@@ -356,21 +358,21 @@ public class DataInputJobsService {
         //声明记录异常信息的变量
         StringBuilder errorMsg = new StringBuilder();
         //删除mysql中原有数据
-        mysqlDao.truncateDrugPriceList();
-        log.info("DrugPriceList 删除完成");
+        mysqlMapper.truncateDrugPriceList();
+        log.info("DrugPriceList 旧数据删除完成");
         try {
             //分页导入导出
             for (int i = 0; i < SIZE; i++) {
                 int begin = i * PAGESHOW;
                 //获取当前页数据
-                List<ItDrugPriceList> oracleList = oracleDao.getAllDrugPriceList(begin, PAGESHOW);
+                List<ItDrugPriceList> oracleList = oracleMapper.getAllDrugPriceList(begin, PAGESHOW);
                 //当前页为空时，跳出循环
                 if (oracleList.size() == 0) break;
 
                 //当前页导入mysql
                 oracleList.parallelStream().forEach(drugPriceList -> {
                     try {
-                        mysqlDao.insertDrugPriceList(drugPriceList);
+                        mysqlMapper.insertDrugPriceList(drugPriceList);
                     } catch (Exception e) {
                         errorMsg.append(e.getMessage()).append("\n");
                     }
@@ -388,23 +390,23 @@ public class DataInputJobsService {
         StringBuilder errorMsg = new StringBuilder();
         try {
             //记录数据库记录的数量
-            int index = mysqlDao.getNumRecordPatMasterIndex();
+            int index = mysqlMapper.getNumRecordPatMasterIndex();
             //记录mysql中最大时间
             String matTime;
             if (index != 0) {
-                matTime = mysqlDao.getMaxDatePatMasterIndex();
+                matTime = mysqlMapper.getMaxDatePatMasterIndex();
             } else {
                 matTime = "1972-10-10 10:10:10";
             }
             log.info("PatMasterIndex mysql中最大时间为：" + matTime);
 
-            int size = (oracleDao.getCountPatMasterIndex() / PAGESHOW) + 1;
+            int size = (oracleMapper.getCountPatMasterIndex() / PAGESHOW) + 1;
             //分页导入导出
             for (int i = 0; i < size; i++) {
                 int begin = i * PAGESHOW;
                 int end = (i + 1) * PAGESHOW;
                 //获取当前页数据
-                List<ItPatMasterIndex> oracleList = oracleDao.getAllPatMasterIndex(begin, PAGESHOW, matTime);
+                List<ItPatMasterIndex> oracleList = oracleMapper.getAllPatMasterIndex(begin, PAGESHOW, matTime);
                 //当前页为空时，跳出循环
                 if (oracleList.size() == 0) continue;
 
@@ -413,9 +415,9 @@ public class DataInputJobsService {
                 List<String> patientIds = oracleList.parallelStream().map(ItPatMasterIndex::getPatientId).collect(Collectors.toList());
                 patientIds.parallelStream().forEach(patientId -> {
                     try {
-                        int count = mysqlDao.patMasterIndexIsExisted(patientId);
+                        int count = mysqlMapper.patMasterIndexIsExisted(patientId);
                         if (count != 0) {
-                            mysqlDao.delPatMasterIndex(patientId);
+                            mysqlMapper.delPatMasterIndex(patientId);
                         }
                     } catch (Exception e) {
                         errorMsg.append(e.getMessage()).append("\n");
@@ -425,7 +427,7 @@ public class DataInputJobsService {
                 //当前页导入mysql
                 oracleList.parallelStream().forEach(patMasterIndex -> {
                     try {
-                        mysqlDao.insertPatMasterIndex(patMasterIndex);
+                        mysqlMapper.insertPatMasterIndex(patMasterIndex);
                     } catch (Exception e) {
                         errorMsg.append(e.getMessage()).append("\n");
                     }
@@ -443,18 +445,18 @@ public class DataInputJobsService {
         StringBuilder errorMsg = new StringBuilder();
         try {
             //删除mysql已有数据
-            mysqlDao.deleteExamItemDict();
+            mysqlMapper.deleteExamItemDict();
             log.info("ExamItemDict 删除完毕");
             //分页导出导入
             for (int i = 0; i < SIZE; i++) {
                 int begin = i * PAGESHOW;
-                List<ItExamItemDict> oracleList = oracleDao.getAllExamItemDict(begin, PAGESHOW);
+                List<ItExamItemDict> oracleList = oracleMapper.getAllExamItemDict(begin, PAGESHOW);
 
                 if (oracleList.size() == 0) break;
 
                 oracleList.parallelStream().forEach(examItemDict -> {
                     try {
-                        mysqlDao.insertExamItemDict(examItemDict);
+                        mysqlMapper.insertExamItemDict(examItemDict);
                     } catch (Exception e) {
                         errorMsg.append(e.getMessage()).append("\n");
                     }
@@ -468,20 +470,35 @@ public class DataInputJobsService {
 
     }
 
-    /**
-     * 单纯测试切面表达式和日志输出效果
-     */
+    @Resource
+    DataSource oracleDataSource;
 
-    public String test() {
-        try {
-            System.out.println("this is a test method");
-            // int x = 10 / 0;
-            log.info("this is a test");
-        } catch (Exception e) {
-            log.error("test error:" + e.getMessage());
-        } finally {
-            log.info(" test end");
+    @Resource
+    DataSource mysqlDataSource;
+
+    /**
+     * 测试数据库连接是否成功, 可以第一时间查看日志
+     */
+    public final void testMysql() {
+        try (Connection mysqlConnection = mysqlDataSource.getConnection()) {
+            log.info(mysqlConnection.getClass().toString());
+            log.info("mysql 数据库连接成功");
+        } catch (SQLException e) {
+            log.error("mysql 数据库连接失败");
+            log.error("mysql 数据库连接失败 cause = " + e.getCause());
         }
-        return "ths is a test error msg";
+    }
+
+    /**
+     * 测试数据库连接是否成功, 可以第一时间查看日志
+     */
+    public final void testOracle() {
+        try (Connection oracleConnection = oracleDataSource.getConnection()) {
+            log.info(oracleConnection.getClass().toString());
+            log.info("oracle 数据库连接成功");
+        } catch (SQLException e) {
+            log.error("oracle 数据库连接失败");
+            log.error("oracle 数据库连接失败 cause  " + e.getCause());
+        }
     }
 }
